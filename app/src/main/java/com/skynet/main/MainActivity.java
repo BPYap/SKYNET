@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
+        super.onResume();
         mLocationFetcher.get_location_update(this); // call to get location update, can put anywhere
     }
 }
