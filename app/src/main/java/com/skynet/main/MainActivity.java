@@ -1,4 +1,4 @@
-package com.example.mx.SKYNET;
+package com.skynet.main;
 
 import android.content.Intent;
 import android.location.Location;
