@@ -15,10 +15,15 @@
  */
 package org.mapsforge.samples.android;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.TextView;
+
 import org.mapsforge.core.graphics.Bitmap;
+import org.mapsforge.core.graphics.Color;
 import org.mapsforge.core.model.Dimension;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.core.model.MapPosition;
@@ -160,35 +165,33 @@ public class SimplestMapViewer extends MapViewerTemplate {
         public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) {
             layerXY = mapView.getMapViewProjection().toPixels(getPosition());
             Bitmap bubble;
-            String here = Double.toString(tapLatLong.getLatitude()) + " " + Double.toString(tapLatLong.getLongitude()) + "\n" + Double.toString(layerXY.x)+ " " + Double.toString(layerXY.y)+ "\n" + Double.toString(tapXY.x)+ " " + Double.toString((tapXY.y));
-            Log.i("Points:", here);
-            if (contains(layerXY, tapXY)) {
+            String here = Double.toString(tapLatLong.getLatitude()) + " " + Double.toString(tapLatLong.getLongitude()) + "\n" + Double.toString(layerXY.x)+ " " + Double.toString(layerXY.y)+ "\n" + Double.toString(tapXY.x)+ " " + Double.toString((tapXY.y)); //for debug purpose
+            Log.i("Points:", here); //for debug purpose
 
-                //SimplestMapViewer.mapView.getLayerManager().getLayers().add(new Marker(item.location, bubble, 0, -bubble.getHeight() / 2));
-
-
-                        /**
-                         *
-                         LatLong targetLocation = new LatLong(hotspot.getLat(),hotspot.getLong());
-                         SimplestMapViewer.mapView.getLayerManager().getLayers().add(new Marker(targetLocation, bubble, 0, -bubble.getHeight() / 2));
-
-                        for (DummyContent.DummyItem item : DummyContent.ITEMS) {
-                            TextView bubbleView = new TextView(getApplicationContext());
-                            Utils.setBackground(bubbleView, Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? getDrawable(R.drawable.balloon_overlay_unfocused) : getResources().getDrawable(R.drawable.balloon_overlay_unfocused));
-                            bubbleView.setGravity(Gravity.CENTER);
-                            bubbleView.setMaxEms(20);
-                            bubbleView.setTextSize(15);
-                            bubbleView.setTextColor(Color.BLACK);
-                            bubbleView.setText(item.text);
-                            bubble = Utils.viewToBitmap(getApplicationContext(), bubbleView);
-                            bubble.incrementRefCount();
-                            SimplestMapViewer.mapView.getLayerManager().getLayers().add(new Marker(item.location, bubble, 0, -bubble.getHeight() / 2));
-                        }
-                         **/
-
-
+            try {
+                Hotspot[] query = new AsycQuery(AppDatabase.getInstance(getApplicationContext())).execute().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
+            if (contains(layerXY, tapXY)) {
+                Log.i("Points:", "contain");
+                TextView bubbleView = new TextView(getApplicationContext());
+                Utils.setBackground(bubbleView, Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? getDrawable(R.drawable.balloon_overlay_unfocused) : getResources().getDrawable(R.drawable.balloon_overlay_unfocused));
+                bubbleView.setGravity(Gravity.CENTER);
+                bubbleView.setMaxEms(20);
+                bubbleView.setTextSize(15);
+                bubbleView.setTextColor(0xffbdbdbd);
+                bubbleView.setText("random text");
+                bubble = Utils.viewToBitmap(getApplicationContext(), bubbleView);
+                bubble.incrementRefCount();
+                SimplestMapViewer.mapView.getLayerManager().getLayers().add(new Marker(tapLatLong, bubble, 0, -bubble.getHeight() / 2));
+            }
+            else
+                Log.i("Points:", "not contain");
             return true;
+
         }
     }
 }
