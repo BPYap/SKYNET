@@ -52,7 +52,13 @@ public class MainActivity extends AppCompatActivity
         LocationCallback locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                // code to handle location results here
+                if (locationResult == null) {
+                    // code to handle null location
+                    return;
+                }
+
+                Location location = locationResult.getLastLocation();
+                // code to use location data
             }
         };
         mLocationFetcher = LocationFetcher.getInstance(this, locationCallback);
@@ -117,6 +123,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
-        // mLocationFetcher.get_location_update(this); call to get location update
+        mLocationFetcher.get_location_update(this); // call to get location update, can put anywhere
     }
 }
