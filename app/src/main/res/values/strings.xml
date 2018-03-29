@@ -1,8 +1,42 @@
 <resources>
-    <string name="app_name">SkyNet</string>
+    <string name="app_name">Skynet</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string-array name="districts">
+        <item>D01 Boat Quay, Raffles Place, Marina </item>
+        <item>D02 Chinatown, Tanjong Pagar</item>
+        <item>D03 Alexendra, Commonwealth</item>
+        <item>D04 Harbourfront, Telok Blangah</item>
+        <item>D05 Buona Vista, West Coast, Clementi New Town</item>
+        <item>D06 City Hall, Clarke Quay</item>
+        <item>D07 Beach Road, Bugis</item>
+        <item>D08 Farrer Park, Serangoon Rd</item>
+        <item>D09 Orchard, River Valley</item>
+        <item>D10 Tanglin, Holland, Bukit Timah</item>
+        <item>D11 Newton, Novena</item>
+        <item>D12 Balestier, Toa Payoh</item>
+        <item>D13 Macpherson, Potong Pasir</item>
+        <item>D14 Eunos, Geylang, Paya Lebar</item>
+        <item>D15 East Coast, Marine Parade</item>
+        <item>D16 Bedok, Upper East Coast</item>
+        <item>D17 Changi Airport, Changi Village</item>
+        <item>D18 Pasir Ris, Tampines</item>
+        <item>D19 Hougang, Punggol, Sengkang</item>
+        <item>D20 Ang Mo Kio, Bishan, Thomson</item>
+        <item>D21 Clementi Park, Upper Bukit Timah</item>
+        <item>D22 Boon Lay, Jurong, Tuas</item>
+        <item>D23 Dairy Farm, Bukit Panjang, Choa Chu Kang</item>
+        <item>D24 Lim Chu Kang, Tengah</item>
+        <item>D25 Admiralty, Woodlands</item>
+        <item>D26 Mandai, Upper Thomson</item>
+        <item>D27 Sembawang, Yishun</item>
+        <item>D28 Seletar, Yio Chu Kang</item>
+    </string-array>
+    <string name="title_activity_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="button_on">ON</string>
+    <string name="button_off">OFF</string>
 </resources>

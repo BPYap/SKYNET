@@ -1,4 +1,4 @@
-package com.skynet.main;
+package com.example.mx.SKYNET;
 
 import org.junit.Test;
 
