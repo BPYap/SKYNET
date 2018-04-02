@@ -3,6 +3,7 @@ package com.skynet.main;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.Spinner;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
 
+import HotspotDatabase.DatabaseControl;
 import location.LocationFetcher;
 
 public class MainActivity extends AppCompatActivity
@@ -82,6 +84,11 @@ public class MainActivity extends AppCompatActivity
             }
         };
         mLocationFetcher = LocationFetcher.getInstance(this, locationCallback);
+
+        //Database setup
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        DatabaseControl.getDatabaseControl().refreshDatabase(getApplicationContext());
     }
 
 
