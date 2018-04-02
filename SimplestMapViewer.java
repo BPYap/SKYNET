@@ -23,7 +23,6 @@ import android.view.Gravity;
 import android.widget.TextView;
 
 import org.mapsforge.core.graphics.Bitmap;
-import org.mapsforge.core.graphics.Color;
 import org.mapsforge.core.model.Dimension;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.core.model.MapPosition;
@@ -38,6 +37,7 @@ import org.mapsforge.map.rendertheme.InternalRenderTheme;
 import org.mapsforge.map.rendertheme.XmlRenderTheme;
 
 import java.util.concurrent.ExecutionException;
+
 
 
 /**
@@ -95,10 +95,9 @@ public class SimplestMapViewer extends MapViewerTemplate {
         //createPositionMarker(1.34907194, 103.6895278);
         //createPositionMarker(1.348, 105.2441);
         Hotspot[] query = new AsycQuery(AppDatabase.getInstance(getApplicationContext())).execute().get();
-
         for (Hotspot hotspot : query) {
-            createPositionMarker(hotspot.getLat(),hotspot.getLong());
-            Log.i("Put marker on", hotspot.getNAME());
+            createPositionMarker(hotspot.getLat(), hotspot.getLong());
+            Log.i("Put marker on", hotspot.getNAME()); //debug
         }
 
     }
@@ -132,16 +131,14 @@ public class SimplestMapViewer extends MapViewerTemplate {
         //To enable internet in Emulator
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        if (InternetConnection.getInternetStatus().getInternet() == true){
+        if (InternetConnection.getInternetStatus().getInternet() == true) {
             try {
                 Log.d("MainActivity", "Internet connected");
-                new AsyncStoreSQL(AppDatabase.getInstance(getApplicationContext()),getApplicationContext()).execute();
-            }
-            catch (Exception e){
+                new AsyncStoreSQL(AppDatabase.getInstance(getApplicationContext()), getApplicationContext()).execute();
+            } catch (Exception e) {
                 Log.e("MainActivity", "Error, skipping data update", e);
             }
-        }
-        else {
+        } else {
             Log.d("MainActivity", "No Internet Connection, skipping Json retrieval");
         }
     }
@@ -161,37 +158,48 @@ public class SimplestMapViewer extends MapViewerTemplate {
         }
 
         //on tap and return overlay bubble
+//            String here = Double.toString(tapLatLong.getLatitude()) + " " + Double.toString(tapLatLong.getLongitude()) + "\n" + Double.toString(layerXY.x)+ " " + Double.toString(layerXY.y)+ "\n" + Double.toString(tapXY.x)+ " " + Double.toString((tapXY.y)); //for debug purpose
+//            Log.i("Points:", here); //for debug purpose
 
-        public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) {
-            layerXY = mapView.getMapViewProjection().toPixels(getPosition());
+        public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) throws ExecutionException, InterruptedException {
             Bitmap bubble;
-            String here = Double.toString(tapLatLong.getLatitude()) + " " + Double.toString(tapLatLong.getLongitude()) + "\n" + Double.toString(layerXY.x)+ " " + Double.toString(layerXY.y)+ "\n" + Double.toString(tapXY.x)+ " " + Double.toString((tapXY.y)); //for debug purpose
-            Log.i("Points:", here); //for debug purpose
 
-            try {
-                Hotspot[] query = new AsycQuery(AppDatabase.getInstance(getApplicationContext())).execute().get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            if (contains(layerXY, tapXY)) {
-                Log.i("Points:", "contain");
+//            Hotspot[] query = new AsycQuery(AppDatabase.getInstance(getApplicationContext())).execute().get();
+//            LatLong[] HotspotLatLong = new LatLong[query.length];
+//            for (int a=0; a<=query.length; a++) {
+//                LatLong Hotspot = new LatLong(query[a].getLat(), query[a].getLong());
+//               HotspotLatLong[a] = Hotspot;
+//            }
+//            Thread.sleep(100000);
+      //      Log.d("NO", "FAILED");
+    //        Hotspot Hotspot = AppDatabase.getInstance(getApplicationContext()).hotspotDao().findHotspot(tapLatLong.getLongitude(),tapLatLong.getLatitude());
+  //          Log.d("TAP", " ");
+//            Thread.sleep(100000);
+            if (this.contains(layerXY,tapXY)){
+//                for (LatLong Hotspot : HotspotLatLong){
+//                    if (tapLatLong.equals(HotspotLatLong))
+//                        break;
+//                    else
+//                        i++;
+//                }
                 TextView bubbleView = new TextView(getApplicationContext());
                 Utils.setBackground(bubbleView, Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? getDrawable(R.drawable.balloon_overlay_unfocused) : getResources().getDrawable(R.drawable.balloon_overlay_unfocused));
                 bubbleView.setGravity(Gravity.CENTER);
                 bubbleView.setMaxEms(20);
                 bubbleView.setTextSize(15);
-                bubbleView.setTextColor(0xffbdbdbd);
-                bubbleView.setText("random text");
+                bubbleView.setTextColor(0xff00bdbd);
+                bubbleView.setText("Hotspot.getNAME()");
                 bubble = Utils.viewToBitmap(getApplicationContext(), bubbleView);
                 bubble.incrementRefCount();
-                SimplestMapViewer.mapView.getLayerManager().getLayers().add(new Marker(tapLatLong, bubble, 0, -bubble.getHeight() / 2));
+                Marker bubbleMarker = new Marker(tapLatLong, bubble, 0, -bubble.getHeight() / 2);
+                if (!mapView.getLayerManager().getLayers().contains(bubbleMarker)) {
+                    this.setBitmap(bubble);
+                }
+                return true;
             }
-            else
-                Log.i("Points:", "not contain");
-            return true;
-
+            return false;
         }
     }
 }
+
+
