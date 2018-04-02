@@ -23,6 +23,7 @@ import com.google.android.gms.location.LocationResult;
 
 import HotspotDatabase.DatabaseControl;
 import location.LocationFetcher;
+import utility.Utility;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -89,6 +90,9 @@ public class MainActivity extends AppCompatActivity
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         DatabaseControl.getDatabaseControl().refreshDatabase(getApplicationContext());
+
+        //Copy map asset to local storage
+        Utility.copyAssets(getApplicationContext());
     }
 
 
