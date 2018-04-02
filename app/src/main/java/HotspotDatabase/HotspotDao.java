@@ -1,12 +1,8 @@
-package HotspotDatabase;
+package hotspotdatabase;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
-
-import java.util.List;
-
-import HotspotDatabase.Hotspot;
 
 /**
  * Created by eddyl on 24/3/2018.
@@ -18,7 +14,7 @@ public interface HotspotDao {
     public Hotspot[] getAll();
 
     @Query("SELECT * FROM hotspot WHERE ADDRESSPOSTALCODE LIKE :postcode")
-    public HotspotDatabase.Hotspot findByPostcode(int postcode);
+    public hotspotdatabase.Hotspot findByPostcode(int postcode);
 
     /*
     @Query("SELECT * FROM hotspot WHERE (Long < :longtitude AND Lat < :lattitude)")
@@ -32,7 +28,7 @@ public interface HotspotDao {
     */
 
     @Insert
-    public void insertAll(HotspotDatabase.Hotspot... hotspots);
+    public void insertAll(hotspotdatabase.Hotspot... hotspots);
 
     /*
     @Update

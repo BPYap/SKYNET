@@ -1,12 +1,9 @@
-package HotspotDatabase;
+package hotspotdatabase;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
-
-import HotspotDatabase.Hotspot;
-import HotspotDatabase.HotspotDao;
 
 /**
  * Created by eddyl on 24/3/2018.

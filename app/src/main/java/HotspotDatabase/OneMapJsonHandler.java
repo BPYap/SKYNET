@@ -1,4 +1,4 @@
-package HotspotDatabase;
+package hotspotdatabase;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,7 +15,7 @@ import org.json.JSONObject;
  * Created by eddyl on 24/3/2018.
  */
 
-public class OneMapJsonHandler implements HotspotDatabase.ProcessHotspotJson {
+public class OneMapJsonHandler implements hotspotdatabase.ProcessHotspotJson {
 
     private int index;
     private int numHotspots;
@@ -45,7 +45,7 @@ public class OneMapJsonHandler implements HotspotDatabase.ProcessHotspotJson {
             String[] operatorName = new String[numHotspots];
             StringBuilder stringBuilder = new StringBuilder();
             String temp[] = new String[2];
-            HotspotDatabase.Hotspot[] hotspot = new HotspotDatabase.Hotspot[numHotspots];
+            hotspotdatabase.Hotspot[] hotspot = new hotspotdatabase.Hotspot[numHotspots];
             for (int i = 0; i < numHotspots; i++) {
                 try{
                     index = i;
@@ -57,7 +57,7 @@ public class OneMapJsonHandler implements HotspotDatabase.ProcessHotspotJson {
                     temp = jsonArray.getJSONObject(i + 1).getString("LatLng").split(",");
                     lattitude[i] = Double.parseDouble(temp[0]);
                     longtitude[i] = Double.parseDouble(temp[1]);
-                    hotspot[i] = new HotspotDatabase.Hotspot(index, lattitude[i], longtitude[i], addressPostalCode[i],
+                    hotspot[i] = new hotspotdatabase.Hotspot(index, lattitude[i], longtitude[i], addressPostalCode[i],
                             description[i], name[i], addressStreetName[i], operatorName[i]);
                 }
                 catch (Exception e){

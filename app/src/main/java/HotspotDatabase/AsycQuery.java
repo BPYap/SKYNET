@@ -1,11 +1,7 @@
-package HotspotDatabase;
+package hotspotdatabase;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by eddyl on 25/3/2018.
@@ -13,9 +9,9 @@ import java.util.List;
 
 public class AsycQuery extends AsyncTask<Void, Void, Hotspot[]> {
 
-    private HotspotDatabase.AppDatabase appDatabase;
+    private hotspotdatabase.AppDatabase appDatabase;
     private Hotspot[] hotspots;
-    public AsycQuery(HotspotDatabase.AppDatabase appDatabase){
+    public AsycQuery(hotspotdatabase.AppDatabase appDatabase){
         this.appDatabase = appDatabase;
     }
 
