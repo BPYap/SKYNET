@@ -6,7 +6,7 @@ import android.util.Log;
 
 import java.io.*;
 
-public class Utility {
+public final class Utility {
     public static void copyAssets(Context context) {
         AssetManager assetManager = context.getAssets();
         String[] files = null;
