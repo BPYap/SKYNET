@@ -1,4 +1,4 @@
-package hotspotdatabase;
+package com.skynet.hotspotdatabase;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import android.content.Context;
 
 public interface ProcessHotspotJson {
 
-    public hotspotdatabase.Hotspot[] getHotspots(Context context);
+    public Hotspot[] getHotspots(Context context);
 
     public void retrieveJson(Context context);
 

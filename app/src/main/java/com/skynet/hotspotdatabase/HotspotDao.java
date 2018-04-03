@@ -1,4 +1,4 @@
-package hotspotdatabase;
+package com.skynet.hotspotdatabase;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
@@ -14,7 +14,7 @@ public interface HotspotDao {
     public Hotspot[] getAll();
 
     @Query("SELECT * FROM hotspot WHERE ADDRESSPOSTALCODE LIKE :postcode")
-    public hotspotdatabase.Hotspot findByPostcode(int postcode);
+    public Hotspot findByPostcode(int postcode);
 
     /*
     @Query("SELECT * FROM hotspot WHERE (Long < :longtitude AND Lat < :lattitude)")
@@ -28,7 +28,7 @@ public interface HotspotDao {
     */
 
     @Insert
-    public void insertAll(hotspotdatabase.Hotspot... hotspots);
+    public void insertAll(Hotspot[] hotspots);
 
     /*
     @Update

@@ -1,4 +1,4 @@
-package hotspotdatabase;
+package com.skynet.hotspotdatabase;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -10,18 +10,18 @@ import android.util.Log;
 
 public class AsyncStoreSQL extends AsyncTask<Void, Void, Void> {
 
-    private hotspotdatabase.AppDatabase appDatabase;
+    private AppDatabase appDatabase;
     private Context context;
-    private hotspotdatabase.Hotspot[] hotspots;
+    private Hotspot[] hotspots;
 
-    protected AsyncStoreSQL(hotspotdatabase.AppDatabase appDatabase, Context context){
+    protected AsyncStoreSQL(AppDatabase appDatabase, Context context){
         this.appDatabase = appDatabase;
         this.context = context;
     }
 
     protected Void doInBackground(Void... voids) {
         try {
-            ProcessHotspotJson processHotspotJson = new hotspotdatabase.OneMapJsonHandler();
+            ProcessHotspotJson processHotspotJson = new OneMapJsonHandler();
             hotspots = processHotspotJson.getHotspots(context);
             if (hotspots == null){
                 Log.d("AsyncStoreSQL", "hotspot value is null");
@@ -38,7 +38,7 @@ public class AsyncStoreSQL extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    private void storeInSQL(hotspotdatabase.Hotspot[] hotspots){
+    private void storeInSQL(Hotspot[] hotspots){
         try {
             appDatabase.hotspotDao().dropTable();                   //delete table
             appDatabase.hotspotDao().insertAll(hotspots);           //create and update table

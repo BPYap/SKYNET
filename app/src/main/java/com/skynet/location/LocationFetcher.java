@@ -2,7 +2,7 @@
 // Create a LocationCallback object
 // Get instance of LocationFetcher by mLocationFetcher = LocationFetcher.getInstance(MainActivity, locationCallback)
 // Get location update by calling mLocationFetcher.get_location_update(MainActivity)
-package location;
+package com.skynet.location;
 
 import android.Manifest;
 import android.content.IntentSender;

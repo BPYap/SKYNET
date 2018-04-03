@@ -1,4 +1,4 @@
-package hotspotdatabase;
+package com.skynet.hotspotdatabase;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;

@@ -1,13 +1,11 @@
-package hotspotdatabase;
+package com.skynet.hotspotdatabase;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,7 +13,7 @@ import org.json.JSONObject;
  * Created by eddyl on 24/3/2018.
  */
 
-public class OneMapJsonHandler implements hotspotdatabase.ProcessHotspotJson {
+public class OneMapJsonHandler implements ProcessHotspotJson {
 
     private int index;
     private int numHotspots;
@@ -45,7 +43,7 @@ public class OneMapJsonHandler implements hotspotdatabase.ProcessHotspotJson {
             String[] operatorName = new String[numHotspots];
             StringBuilder stringBuilder = new StringBuilder();
             String temp[] = new String[2];
-            hotspotdatabase.Hotspot[] hotspot = new hotspotdatabase.Hotspot[numHotspots];
+            Hotspot[] hotspot = new Hotspot[numHotspots];
             for (int i = 0; i < numHotspots; i++) {
                 try{
                     index = i;
@@ -57,7 +55,7 @@ public class OneMapJsonHandler implements hotspotdatabase.ProcessHotspotJson {
                     temp = jsonArray.getJSONObject(i + 1).getString("LatLng").split(",");
                     lattitude[i] = Double.parseDouble(temp[0]);
                     longtitude[i] = Double.parseDouble(temp[1]);
-                    hotspot[i] = new hotspotdatabase.Hotspot(index, lattitude[i], longtitude[i], addressPostalCode[i],
+                    hotspot[i] = new Hotspot(index, lattitude[i], longtitude[i], addressPostalCode[i],
                             description[i], name[i], addressStreetName[i], operatorName[i]);
                 }
                 catch (Exception e){

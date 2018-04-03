@@ -1,4 +1,4 @@
-package hotspotdatabase;
+package com.skynet.hotspotdatabase;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -9,9 +9,9 @@ import android.util.Log;
 
 public class AsycQuery extends AsyncTask<Void, Void, Hotspot[]> {
 
-    private hotspotdatabase.AppDatabase appDatabase;
+    private AppDatabase appDatabase;
     private Hotspot[] hotspots;
-    public AsycQuery(hotspotdatabase.AppDatabase appDatabase){
+    public AsycQuery(AppDatabase appDatabase){
         this.appDatabase = appDatabase;
     }
 

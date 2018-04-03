@@ -1,4 +1,4 @@
-package utility;
+package com.skynet.utility;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -7,21 +7,22 @@ import android.util.Log;
 import java.io.*;
 
 public class Utility {
-    public static void copyAssets(Context context, String filename) {
+    public static File copyAssets(Context context, String filename) {
         AssetManager assetManager = context.getAssets();
 
         InputStream in = null;
         OutputStream out = null;
+        File outFile = null;
         try {
             in = assetManager.open(filename);
             File dir = context.getExternalFilesDir(null);
 
             if (dir == null) {
                 Log.e("Utility", "context.getExternalFilesDir(null) return null");
-                return;
+                return null;
             }
 
-            File outFile = new File(dir, filename);
+            outFile = new File(dir, filename);
             if (!outFile.exists()) {
                 out = new FileOutputStream(outFile);
                 copyFile(in, out);
@@ -48,6 +49,7 @@ public class Utility {
                 }
             }
         }
+        return outFile;
     }
 
     private static void copyFile(InputStream in, OutputStream out) throws IOException {
