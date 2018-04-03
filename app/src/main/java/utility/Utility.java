@@ -6,42 +6,45 @@ import android.util.Log;
 
 import java.io.*;
 
-public final class Utility {
-    public static void copyAssets(Context context) {
+public class Utility {
+    public static void copyAssets(Context context, String filename) {
         AssetManager assetManager = context.getAssets();
-        String[] files = null;
+
+        InputStream in = null;
+        OutputStream out = null;
         try {
-            files = assetManager.list("");
-        } catch (IOException e) {
-            Log.e("tag", "Failed to get asset file list.", e);
-        }
-        if (files != null) for (String filename : files) {
-            InputStream in = null;
-            OutputStream out = null;
-            try {
-                in = assetManager.open(filename);
-                File outFile = new File(context.getExternalFilesDir(null), filename);
-                if (!outFile.exists()) {
-                    out = new FileOutputStream(outFile);
-                    copyFile(in, out);
-                }
-            } catch(IOException e) {
-                Log.e("tag", "Failed to copy asset file: " + filename, e);
+            in = assetManager.open(filename);
+            File dir = context.getExternalFilesDir(null);
+
+            if (dir == null) {
+                Log.e("Utility", "context.getExternalFilesDir(null) return null");
+                return;
             }
-            finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // NOOP
-                    }
+
+            File outFile = new File(dir, filename);
+            if (!outFile.exists()) {
+                out = new FileOutputStream(outFile);
+                copyFile(in, out);
+                Log.i("Utility", filename + " is copied to " + dir.getName());
+            } else {
+                Log.i("Utility", filename + " already exists. No action needed");
+            }
+        } catch(IOException e) {
+            Log.e("tag", "Failed to copy asset file: " + filename, e);
+        }
+        finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    // NOOP
                 }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        // NOOP
-                    }
+            }
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    // NOOP
                 }
             }
         }
