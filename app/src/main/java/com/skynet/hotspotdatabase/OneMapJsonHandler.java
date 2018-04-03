@@ -31,8 +31,14 @@ public class OneMapJsonHandler implements ProcessHotspotJson {
     public Hotspot[] getHotspots(Context context) {
         try {
             retrieveJson(context);
-            Thread.sleep(5000);
+            int pollCount = 0;
+            do{
+                Thread.sleep(5000);
+                Log.d("Json","Still requesting json... for "+Integer.toString(++pollCount)+" time.");
+            }while(json == null && pollCount<5);
+
             JSONArray jsonArray = json.getJSONArray("SrchResults");
+
             numHotspots = Integer.parseInt(jsonArray.getJSONObject(0).getString("FeatCount"));
             int[] addressPostalCode = new int[numHotspots];
             double[] longtitude = new double[numHotspots];
