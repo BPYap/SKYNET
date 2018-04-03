@@ -5,34 +5,43 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
-
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
+import com.skynet.hotspotdatabase.DatabaseControl;
+import com.skynet.location.LocationFetcher;
+import com.skynet.map.Map;
+import com.skynet.utility.Utility;
 
-import hotspotdatabase.DatabaseControl;
-import location.LocationFetcher;
-import utility.Utility;
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     private LocationFetcher mLocationFetcher;
+    private Map map;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Copy map asset to local storage
+        File map_file = Utility.copyAssets(getApplicationContext(), "sg.map");
+
+        map = new Map(this, findViewById(R.id.mapView), map_file);
+
         // UI toolbar (dunno where)
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -90,9 +99,6 @@ public class MainActivity extends AppCompatActivity
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         DatabaseControl.getDatabaseControl().refreshDatabase(getApplicationContext());
-
-        //Copy map asset to local storage
-        Utility.copyAssets(getApplicationContext());
     }
 
 
@@ -132,5 +138,17 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         mLocationFetcher.get_location_update(this); // call to get location update, can put anywhere
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        map.save_preferences();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        map.cleanup();
     }
 }
