@@ -33,4 +33,12 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:1.0.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
     compile 'com.google.android.gms:play-services-location:11.0.0'
+
+    implementation 'org.mapsforge:mapsforge-core:master-SNAPSHOT'
+    implementation 'org.mapsforge:mapsforge-map:master-SNAPSHOT'
+    implementation 'org.mapsforge:mapsforge-map-reader:master-SNAPSHOT'
+    implementation 'org.mapsforge:mapsforge-themes:master-SNAPSHOT'
+    implementation 'net.sf.kxml:kxml2:2.3.0'
+    implementation 'org.mapsforge:mapsforge-map-android:master-SNAPSHOT'
+    implementation 'com.caverock:androidsvg:1.2.2-beta-1'
 }

@@ -21,6 +21,7 @@ public class Utility {
             try {
                 in = assetManager.open(filename);
                 File outFile = new File(context.getExternalFilesDir(null), filename);
+                Log.d("Output Direct ory:",context.getExternalFilesDir(null).toString());
                 if (!outFile.exists()) {
                     out = new FileOutputStream(outFile);
                     copyFile(in, out);
