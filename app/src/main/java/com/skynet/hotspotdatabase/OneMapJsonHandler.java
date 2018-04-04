@@ -15,6 +15,8 @@ import org.json.JSONObject;
 
 public class OneMapJsonHandler implements ProcessHotspotJson {
 
+    private static final int MAX_POLL_COUNT = 5; //Edit to change max polls allowed
+
     private int index;
     private int numHotspots;
 
@@ -34,8 +36,9 @@ public class OneMapJsonHandler implements ProcessHotspotJson {
             int pollCount = 0;
             do{
                 Thread.sleep(5000);
-                Log.d("Json","Still requesting json... for "+Integer.toString(++pollCount)+" time.");
-            }while(json == null && pollCount<5);
+                Log.d("refreshDatabase","Waiting for Json response... Attempt #"+Integer.toString(++pollCount)
+                        +"...");
+            }while(json == null && pollCount<MAX_POLL_COUNT);
 
             JSONArray jsonArray = json.getJSONArray("SrchResults");
             numHotspots = Integer.parseInt(jsonArray.getJSONObject(0).getString("FeatCount"));
@@ -64,14 +67,14 @@ public class OneMapJsonHandler implements ProcessHotspotJson {
                             description[i], name[i], addressStreetName[i], operatorName[i]);
                 }
                 catch (Exception e){
-                    Log.e("Json", "storeInSQL erorr ", e);
+                    Log.e("refreshDatabase", "storeInSQL erorr ", e);
                     return null;
                 }
             }
-            Log.d("Json", "storeInSQL done!");
+            Log.d("refreshDatabase", "storeInSQL done!");
             return hotspot;
         } catch (Exception e) {
-            Log.e("Json", "Json handler or drop error", e);
+            Log.e("refreshDatabase", "Json handler or drop error", e);
             return null;
         }
     }
@@ -87,19 +90,19 @@ public class OneMapJsonHandler implements ProcessHotspotJson {
                     try {
                         json = response;
                     } catch (Exception e) {
-                        Log.e("Json", "Failed assign Json", e);
+                        Log.e("refreshDatabase", "Failed to fetch Json", e);
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("Json", "Volley error", error);
+                    Log.e("refreshDatabase", "Volley error", error);
                 }
             });
-            Log.d("Json", "retrieveJson: done");
+            Log.d("refreshDatabase", "Json request started");
             RequestQueueSingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
         } catch (Exception e) {
-            Log.e("Json", "JsonObjectRequest failed", e);
+            Log.e("refreshDatabase", "JsonObjectRequest failed", e);
         }
     }
 

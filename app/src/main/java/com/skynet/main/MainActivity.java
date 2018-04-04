@@ -19,7 +19,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
-import com.skynet.hotspotdatabase.DatabaseControl;
+import com.skynet.hotspotdatabase.DatabaseManager;
 import com.skynet.location.LocationFetcher;
 import com.skynet.map.Map;
 import com.skynet.utility.Utility;
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         //Database setup
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        DatabaseControl.getDatabaseControl().refreshDatabase(getApplicationContext());
+        DatabaseManager.getDatabaseControl().refreshDatabase(getApplicationContext());
     }
 
 

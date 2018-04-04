@@ -21,19 +21,19 @@ public class AsyncStoreSQL extends AsyncTask<Void, Void, Void> {
 
     protected Void doInBackground(Void... voids) {
         try {
+            //create new instance of processHotspotJson using OneMapJsonHandler
             ProcessHotspotJson processHotspotJson = new OneMapJsonHandler();
             hotspots = processHotspotJson.getHotspots(context);
             if (hotspots == null){
-                Log.d("AsyncStoreSQL", "hotspot value is null");
+                Log.d("refreshDatabase", "hotspot value is null");
                 return null;
             }
             storeInSQL(hotspots);
-            Log.d("AsyncStoreSQL", "Store in SQL done");
-            String test = appDatabase.hotspotDao().findByPostcode(470719).getNAME(); //Query debug test
-            Log.d("AsyncStoreSQL", test);
+            String test = appDatabase.hotspotDao().findByIndex(500).getName(); //Query debug test
+            Log.d("refreshDatabase", "Debug test: "+test);
         }
         catch (Exception e){
-            Log.e("AsyncStoreSQL", "Async doInBackground Error", e);
+            Log.e("refreshDatabase", "Async doInBackground Error", e);
         }
         return null;
     }
@@ -44,7 +44,7 @@ public class AsyncStoreSQL extends AsyncTask<Void, Void, Void> {
             appDatabase.hotspotDao().insertAll(hotspots);           //create and update table
         }
         catch (Exception e){
-            Log.e("Database", "storeInSQL Error", e);
+            Log.e("refreshDatabase", "storeInSQL Dao Error", e);
         }
     }
 }
