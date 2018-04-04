@@ -21,7 +21,7 @@ public class OneMapJsonHandler implements ProcessHotspotJson {
     private String urlSite = "https://developers.onemap.sg/privateapi/";
     private String urlType = "themesvc/retrieveTheme?queryName=wireless_hotspots&token=";
     private String apiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEzOTEsInVzZXJfaWQiOjEzOTEsImVtYWlsIjoiZWRkeWxpbTk1QGhvdG1haWwuY29tIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNTIyNjA3NjIwLCJleHAiOjE1MjMwMzk2MjAsIm5iZiI6MTUyMjYwNzYyMCwianRpIjoiM2U1MjczMDQ0NWMxYTEzMDVjMDVmOTI0NTQ5M2UyYTIifQ.1_SKgAh6wPyHlU8jxooYCg5vhwH9vjzgcgsF5QyW6aM";
-    JSONObject json;
+    private JSONObject json;
 
 
     protected OneMapJsonHandler() {
@@ -31,7 +31,12 @@ public class OneMapJsonHandler implements ProcessHotspotJson {
     public Hotspot[] getHotspots(Context context) {
         try {
             retrieveJson(context);
-            Thread.sleep(5000);
+            int pollCount = 0;
+            do{
+                Thread.sleep(5000);
+                Log.d("Json","Still requesting json... for "+Integer.toString(++pollCount)+" time.");
+            }while(json == null && pollCount<5);
+
             JSONArray jsonArray = json.getJSONArray("SrchResults");
             numHotspots = Integer.parseInt(jsonArray.getJSONObject(0).getString("FeatCount"));
             int[] addressPostalCode = new int[numHotspots];

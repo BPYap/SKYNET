@@ -18,7 +18,7 @@ public class DatabaseControl {
     }
 
     public void refreshDatabase(Context context){
-        if (InternetConnection.getInternetConnection().getInternet() == true) {         //check if internet is connected
+        if (new InternetConnection().getInternet() == true) {         //check if internet is connected
             try {
                 Log.d("MainActivity", "Internet connected");
                 new AsyncStoreSQL(AppDatabase.getInstance(context), context).execute();     //store in SQL
