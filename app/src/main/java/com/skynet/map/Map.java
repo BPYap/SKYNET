@@ -61,7 +61,7 @@ public class Map {
     private void createTileCaches(AppCompatActivity activity) {
         this.tileCaches.add(AndroidUtil.createTileCache(
                 activity, activity.getClass().getSimpleName(),
-                this.mapView.getModel().displayModel.getTileSize(), 2.625f,
+                this.mapView.getModel().displayModel.getTileSize(), 1f,
                 this.mapView.getModel().frameBufferModel.getOverdrawFactor()));
     }
 

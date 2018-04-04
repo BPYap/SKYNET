@@ -19,7 +19,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
-import com.skynet.hotspotdatabase.DatabaseControl;
+import com.skynet.hotspotdatabase.DatabaseManager;
 import com.skynet.location.LocationFetcher;
 import com.skynet.map.Map;
 import com.skynet.utility.Utility;
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity
     private LocationFetcher mLocationFetcher;
     private Map map;
 
+    // Activity Lifecycle
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +40,35 @@ public class MainActivity extends AppCompatActivity
 
         //Copy map asset to local storage
         File map_file = Utility.copyAssets(getApplicationContext(), "sg.map");
-        //Setup mapforge
+
+        // Mapforge setup
         map = new Map(this, findViewById(R.id.mapView), map_file);
         map.setBounding_box("1.2837,103.6575,1.4317,104.0007");
         map.setZoomLevelMin(13);
         map.setZoomLevelMax(20);
+
+        // Database setup
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        DatabaseManager.getDatabaseControl().refreshDatabase(getApplicationContext());
+
+        // Location service setup
+        LocationCallback locationCallback = new LocationCallback(){
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    // code to handle null location
+
+                    return;
+                }
+
+                Location location = locationResult.getLastLocation();
+                // code to use location data
+                Log.i("Lat:",Double.toString(location.getLatitude()));
+                Log.i("Long:",Double.toString(location.getLongitude()));
+            }
+        };
+        mLocationFetcher = LocationFetcher.getInstance(this, locationCallback);
 
         // UI toolbar (dunno where)
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -80,31 +105,27 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        // Location service CHUNK
-        LocationCallback locationCallback = new LocationCallback(){
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    // code to handle null location
-
-                    return;
-                }
-
-                Location location = locationResult.getLastLocation();
-                // code to use location data
-                Log.i("Lat:",Double.toString(location.getLatitude()));
-                Log.i("Long:",Double.toString(location.getLongitude()));
-            }
-        };
-        mLocationFetcher = LocationFetcher.getInstance(this, locationCallback);
-
-        //Database setup
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        DatabaseControl.getDatabaseControl().refreshDatabase(getApplicationContext());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mLocationFetcher.get_location_update(this); // call to get location update, can put anywhere
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        map.save_preferences();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        map.cleanup();
+    }
+
+    // UI callback
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -114,7 +135,6 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -134,24 +154,5 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    // location service CHUNK (refresh location upon re-enter app)
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mLocationFetcher.get_location_update(this); // call to get location update, can put anywhere
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        map.save_preferences();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        map.cleanup();
     }
 }

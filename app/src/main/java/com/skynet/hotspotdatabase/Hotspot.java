@@ -10,94 +10,94 @@ import android.arch.persistence.room.Entity;
 public class Hotspot {
     private int index;
 
-    private double Lat;
+    private double lattitude;
 
-    private double Long;
+    private double longtitude;
 
-    private int ADDRESSPOSTALCODE;
+    private int addressPostalCode;
 
-    private String DESCRIPTION;
+    private String description;
 
-    private String NAME;
+    private String name;
 
-    private String ADDRESSSTREETNAME;
+    private String addressStreetName;
 
-    private String OPERATOR_NAME;
+    private String operatorName;
 
-    public Hotspot(int index, double Lat, double Long, int ADDRESSPOSTALCODE, String DESCRIPTION,
-                   String NAME, String ADDRESSSTREETNAME, String OPERATOR_NAME){
+    public Hotspot(int index, double lattitude, double longtitude, int addressPostalCode, String description,
+                   String name, String addressStreetName, String operatorName){
         this.index = index;
-        this.Lat = Lat;
-        this.Long = Long;
-        this.ADDRESSPOSTALCODE = ADDRESSPOSTALCODE;
-        this.DESCRIPTION = DESCRIPTION;
-        this.NAME = NAME;
-        this.ADDRESSSTREETNAME = ADDRESSSTREETNAME;
-        this.OPERATOR_NAME = OPERATOR_NAME;
+        this.lattitude = lattitude;
+        this.longtitude = longtitude;
+        this.addressPostalCode = addressPostalCode;
+        this.description = description;
+        this.name = name;
+        this.addressStreetName = addressStreetName;
+        this.operatorName = operatorName;
     }
 
     public int getIndex() {
         return index;
     }
 
-    public double getLat(){
-        return Lat;
+    public double getLattitude(){
+        return lattitude;
     }
 
-    public double getLong(){
-        return Long;
+    public double getLongtitude(){
+        return longtitude;
     }
 
-    public int getADDRESSPOSTALCODE(){
-        return ADDRESSPOSTALCODE;
+    public int getAddressPostalCode(){
+        return addressPostalCode;
     }
 
-    public String getDESCRIPTION(){
-        return DESCRIPTION;
+    public String getDescription(){
+        return description;
     }
 
-    public String getNAME(){
-        return NAME;
+    public String getName(){
+        return name;
     }
 
-    public String getADDRESSSTREETNAME(){
-        return  ADDRESSSTREETNAME;
+    public String getAddressStreetName(){
+        return  addressStreetName;
     }
 
-    public String getOPERATOR_NAME(){
-        return OPERATOR_NAME;
+    public String getOperatorName(){
+        return operatorName;
     }
 
-    public void setI(int index) {
+    public void setIndex(int index) {
         this.index = index;
     }
 
-    public void setLat(double lat){
-        this.Lat = lat;
+    public void setLattitude(double lattitude){
+        this.lattitude = lattitude;
     }
 
-    public void setLong(double Long){
-        this.Long = Long;
+    public void setLongtitude(double longtitude){
+        this.longtitude = longtitude;
     }
 
-    public void setADDRESSPOSTALCODE(int addresspostalcode){
-        this.ADDRESSPOSTALCODE = addresspostalcode;
+    public void setAddressPostalCode(int addressPostalCode){
+        this.addressPostalCode = addressPostalCode;
     }
 
-    public void setADDRESSSTREETNAME(String ADDRESSSTREETNAME) {
-        this.ADDRESSSTREETNAME = ADDRESSSTREETNAME;
+    public void setAddressStreetName(String addressStreetName) {
+        this.addressStreetName = addressStreetName;
     }
 
-    public void setDESCRIPTION(String DESCRIPTION) {
-        this.DESCRIPTION = DESCRIPTION;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setNAME(String NAME) {
-        this.NAME = NAME;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setOPERATOR_NAME(String OPERATOR_NAME) {
-        this.OPERATOR_NAME = OPERATOR_NAME;
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
     
 }

@@ -13,30 +13,14 @@ public interface HotspotDao {
     @Query("SELECT * FROM hotspot")
     public Hotspot[] getAll();
 
-    @Query("SELECT * FROM hotspot WHERE ADDRESSPOSTALCODE LIKE :postcode")
+    @Query("SELECT * FROM hotspot WHERE addressPostalCode LIKE :postcode")
     public Hotspot findByPostcode(int postcode);
 
-    /*
-    @Query("SELECT * FROM hotspot WHERE (Long < :longtitude AND Lat < :lattitude)")
-    public Hotspot findNearbyHotspots(double longtitude, double lattitude);
-
-    @Query("SELECT ADDRESSSTREETNAME FROM hotspot WHERE NAME = :Names")
-    public String findAllNames(String[] Names);
-
-    @Query("SELECT * FROM hotspot WHERE (Long = :longtitude AND Lat = :lattitude)")
-    Hotspot findDuplicate(float longtitude, float lattitude);
-    */
+    @Query("SELECT * FROM hotspot WHERE `index` LIKE :index")
+    public Hotspot findByIndex(int index);
 
     @Insert
     public void insertAll(Hotspot[] hotspots);
-
-    /*
-    @Update
-    public int update(Hotspot... hotspots); //int returns number of rows updated
-
-    @Delete
-    public void delete(Hotspot hotspot);
-    */
 
     @Query("Delete FROM hotspot")
     public void dropTable();
