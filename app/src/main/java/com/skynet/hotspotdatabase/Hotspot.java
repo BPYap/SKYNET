@@ -70,12 +70,12 @@ public class Hotspot {
         this.index = index;
     }
 
-    public void setLattitude(double lattitude){
-        this.latitude = lattitude;
+    public void setLatitude(double latitude){
+        this.latitude = latitude;
     }
 
-    public void setLongtitude(double longtitude){
-        this.longitude = longtitude;
+    public void setLongitude(double longitude){
+        this.longitude = longitude;
     }
 
     public void setAddressPostalCode(int addressPostalCode){
