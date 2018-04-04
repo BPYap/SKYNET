@@ -4,19 +4,10 @@ import android.util.Log;
 
 import java.net.InetAddress;
 
-//Internet connection singleton
+//Internet connection
 
 public class InternetConnection {
     private boolean internet = false;                           //internet status
-
-    private static InternetConnection internetConnection = new InternetConnection();
-
-    private InternetConnection(){
-    }
-
-    public static InternetConnection getInternetConnection(){
-        return internetConnection;
-    }
 
     public boolean getInternet(){
         isInternetAvailable();
