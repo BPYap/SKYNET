@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
         File map_file = Utility.copyAssets(getApplicationContext(), "sg.map");
 
         // Mapforge setup
-        map = new Map(this, findViewById(R.id.mapView), map_file);
+        map = new Map(this, findViewById(R.id.mapView), map_file,getApplicationContext());
         map.setBounding_box("1.2837,103.6575,1.4317,104.0007");
         map.setZoomLevelMin(13);
         map.setZoomLevelMax(20);

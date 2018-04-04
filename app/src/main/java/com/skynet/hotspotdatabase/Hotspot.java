@@ -10,9 +10,9 @@ import android.arch.persistence.room.Entity;
 public class Hotspot {
     private int index;
 
-    private double lattitude;
+    private double latitude;
 
-    private double longtitude;
+    private double longitude;
 
     private int addressPostalCode;
 
@@ -24,11 +24,11 @@ public class Hotspot {
 
     private String operatorName;
 
-    public Hotspot(int index, double lattitude, double longtitude, int addressPostalCode, String description,
+    public Hotspot(int index, double latitude, double longitude, int addressPostalCode, String description,
                    String name, String addressStreetName, String operatorName){
         this.index = index;
-        this.lattitude = lattitude;
-        this.longtitude = longtitude;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.addressPostalCode = addressPostalCode;
         this.description = description;
         this.name = name;
@@ -40,13 +40,11 @@ public class Hotspot {
         return index;
     }
 
-    public double getLattitude(){
-        return lattitude;
+    public double getLatitude(){
+        return latitude;
     }
 
-    public double getLongtitude(){
-        return longtitude;
-    }
+    public double getLongitude(){return longitude;}
 
     public int getAddressPostalCode(){
         return addressPostalCode;
@@ -72,12 +70,12 @@ public class Hotspot {
         this.index = index;
     }
 
-    public void setLattitude(double lattitude){
-        this.lattitude = lattitude;
+    public void setLatitude(double latitude){
+        this.latitude = latitude;
     }
 
-    public void setLongtitude(double longtitude){
-        this.longtitude = longtitude;
+    public void setLongitude(double longitude){
+        this.longitude = longitude;
     }
 
     public void setAddressPostalCode(int addressPostalCode){
