@@ -25,13 +25,15 @@ import java.util.List;
 import static android.content.Context.MODE_PRIVATE;
 
 public class Map {
-    // TODO: make these global into arguments for constructor for modularity
-    private static final String BOUNDING_BOX = "1.2837,103.6575,1.4317,104.0007";
+    private String bounding_box;
+    private byte default_zoom_level = 13;
+    private byte min_zoom_level;
+    private byte max_zoom_level;
 
     private MapView mapView;
     private MapFile mapFile;
     private PreferencesFacade preferencesFacade;
-    protected List<TileCache> tileCaches = new ArrayList<TileCache>();
+    private List<TileCache> tileCaches = new ArrayList<>();
 
     public Map(AppCompatActivity activity, View view, File map_file) {
         mapFile = new MapFile(map_file);
@@ -52,17 +54,14 @@ public class Map {
         mapView.getModel().init(this.preferencesFacade);
         mapView.setClickable(true);
         mapView.getMapScaleBar().setVisible(true);
-        mapView.setBuiltInZoomControls(hasZoomControls());
-        mapView.getMapZoomControls().setAutoHide(isZoomControlsAutoHide());
-        mapView.getMapZoomControls().setZoomLevelMin(getZoomLevelMin());
-        mapView.getMapZoomControls().setZoomLevelMax(getZoomLevelMax());
-        mapView.getModel().mapViewPosition.setMapLimit(BoundingBox.fromString(BOUNDING_BOX));
+        mapView.setBuiltInZoomControls(true);
+        mapView.getMapZoomControls().setAutoHide(true);
     }
 
     private void createTileCaches(AppCompatActivity activity) {
         this.tileCaches.add(AndroidUtil.createTileCache(
                 activity, activity.getClass().getSimpleName(),
-                this.mapView.getModel().displayModel.getTileSize(), 1.0f,
+                this.mapView.getModel().displayModel.getTileSize(), 2.625f,
                 this.mapView.getModel().frameBufferModel.getOverdrawFactor()));
     }
 
@@ -84,38 +83,16 @@ public class Map {
         initializePosition(mapView.getModel().mapViewPosition);
     }
 
-    protected byte getZoomLevelDefault() {
-        return (byte) 13;
+    private MapPosition getInitialPosition() {
+        return new MapPosition(mapFile.boundingBox().getCenterPoint(), default_zoom_level );
     }
 
-    protected byte getZoomLevelMin() {
-        return (byte) 13;
-    }
-
-    protected byte getZoomLevelMax() { return (byte) 20; }
-
-    protected MapPosition getInitialPosition() {
-        return new MapPosition(mapFile.boundingBox().getCenterPoint(), (byte)13 );
-        // return new MapPosition(new LatLong(LAT, LONG), getZoomLevelDefault());
-    }
-
-    protected boolean hasZoomControls() {
-        return true;
-    }
-
-    protected boolean isZoomControlsAutoHide() {
-        return true;
-    }
-
-    protected IMapViewPosition initializePosition(IMapViewPosition mvp) {
+    private void initializePosition(IMapViewPosition mvp) {
         LatLong center = mvp.getCenter();
 
         if (center.equals(new LatLong(0, 0))) {
             mvp.setMapPosition(this.getInitialPosition());
         }
-        mvp.setZoomLevelMax(getZoomLevelMax());
-        mvp.setZoomLevelMin(getZoomLevelMin());
-        return mvp;
     }
 
     protected void purgeTileCaches() {
@@ -131,6 +108,38 @@ public class Map {
 
     protected HillsRenderConfig getHillsRenderConfig() {
         return null;
+    }
+
+    public byte getZoomLevelDefault() {
+        return default_zoom_level;
+    }
+
+    public void setZoomLevelDefault(int level) {
+        default_zoom_level = (byte) level;
+        mapView.getModel().mapViewPosition.setZoomLevel(default_zoom_level);
+    }
+
+    public byte getZoomLevelMin() {
+        return min_zoom_level;
+    }
+
+    public void setZoomLevelMin(int level) {
+        min_zoom_level = (byte) level;
+        mapView.getMapZoomControls().setZoomLevelMin(min_zoom_level);
+    }
+
+    public byte getZoomLevelMax() { return max_zoom_level; }
+
+    public void setZoomLevelMax(int level) {
+        max_zoom_level = (byte) level;
+        mapView.getMapZoomControls().setZoomLevelMax(max_zoom_level);
+    }
+
+    public String getBoundingBox() { return bounding_box; }
+
+    public void setBounding_box(String bounding_box) {
+        this.bounding_box = bounding_box;
+        mapView.getModel().mapViewPosition.setMapLimit(BoundingBox.fromString(bounding_box));
     }
 
     public void save_preferences() {
