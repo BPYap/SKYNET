@@ -11,7 +11,7 @@ import org.mapsforge.map.reader.MapFile;
 
 public class MapApp extends Application {
 
-    public static final String TAG = "Mapsforge Samples";
+    public static final String TAG = "Mapsforge Application";
 
     /*
      * type to use for maps to store in the external files directory
@@ -25,14 +25,14 @@ public class MapApp extends Application {
     public void onCreate() {
         super.onCreate();
         AndroidGraphicFactory.createInstance(this);
-        Log.e(TAG,
+        Log.i(TAG,
                 "Device scale factor "
                         + Float.toString(DisplayModel.getDeviceScaleFactor()));
         SharedPreferences preferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
         float fs = Float.valueOf(preferences.getString(SETTING_SCALE,
                 Float.toString(DisplayModel.getDefaultUserScaleFactor())));
-        Log.e(TAG, "User ScaleFactor " + Float.toString(fs));
+        Log.i(TAG, "User ScaleFactor " + Float.toString(fs));
         if (fs != DisplayModel.getDefaultUserScaleFactor()) {
             DisplayModel.setDefaultUserScaleFactor(fs);
         }
