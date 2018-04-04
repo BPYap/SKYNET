@@ -39,8 +39,11 @@ public class MainActivity extends AppCompatActivity
 
         //Copy map asset to local storage
         File map_file = Utility.copyAssets(getApplicationContext(), "sg.map");
-
+        //Setup mapforge
         map = new Map(this, findViewById(R.id.mapView), map_file);
+        map.setBounding_box("1.2837,103.6575,1.4317,104.0007");
+        map.setZoomLevelMin(13);
+        map.setZoomLevelMax(20);
 
         // UI toolbar (dunno where)
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
