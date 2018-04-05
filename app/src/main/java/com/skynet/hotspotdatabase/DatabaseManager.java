@@ -2,6 +2,7 @@ package com.skynet.hotspotdatabase;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 public class DatabaseManager {
 
@@ -26,6 +27,7 @@ public class DatabaseManager {
                 Log.e("Internet, refreshDatabase", "Error, skipping data update", e);
             }
         } else {
+            Toast.makeText(context, "Connect to internet to refresh data.", Toast.LENGTH_LONG).show();
             Log.d("Internet, refreshDatabase", "No Internet Connection, skipping Json retrieval");
         }
     }
