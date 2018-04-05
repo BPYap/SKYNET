@@ -36,7 +36,7 @@ public class OneMapJsonHandler implements ProcessHotspotJson {
             int pollCount = 0;
             do{
                 Thread.sleep(5000);
-                Log.d("refreshDatabase","Waiting for Json response... Attempt #"+Integer.toString(++pollCount)
+                Log.d("refreshDatabase","Waiting for Json response... Attempt #"+ ++pollCount
                         +"...");
             }while(json == null && pollCount<MAX_POLL_COUNT);
 
