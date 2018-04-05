@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.skynet.onemap.OneMapJsonHandler;
+import com.skynet.hotspotapis.onemap.OneMapJsonHandler;
 
 /**
  * Created by eddyl on 25/3/2018.
