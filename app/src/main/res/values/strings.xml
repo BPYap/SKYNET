@@ -6,7 +6,7 @@
 
     <string name="action_settings">Settings</string>
     <string-array name="districts">
-        <item>D01 Boat Quay, Raffles Place, Marina </item>
+        <item>D01 Boat Quay, Raffles Place, Marina</item>
         <item>D02 Chinatown, Tanjong Pagar</item>
         <item>D03 Alexendra, Commonwealth</item>
         <item>D04 Harbourfront, Telok Blangah</item>
@@ -34,6 +34,66 @@
         <item>D26 Mandai, Upper Thomson</item>
         <item>D27 Sembawang, Yishun</item>
         <item>D28 Seletar, Yio Chu Kang</item>
+    </string-array>
+    <string-array name="districts_lat">
+        <item>1.2798794531241364</item>
+        <item>1.2747308914635735</item>
+        <item>1.275074129228351</item>
+        <item>1.2532101467045038</item>
+        <item>1.298860748113843</item>
+        <item>1.2844448564401076</item>
+        <item>1.2945703127176835</item>
+        <item>1.301606622946058</item>
+        <item>1.2961148702979497</item>
+        <item>1.3055538127774096</item>
+        <item>1.3239167445628082</item>
+        <item>1.3324975072951963</item>
+        <item>1.3433092257545738</item>
+        <item>1.3234018978525155</item>
+        <item>1.3055538127774096</item>
+        <item>1.3306097420520546</item>
+        <item>1.3472642357774074</item>
+        <item>1.3762668146950583</item>
+        <item>1.3896250232631577</item>
+        <item>1.3539043919835527</item>
+        <item>1.342921106181842</item>
+        <item>1.3425778777031265</item>
+        <item>1.3779301556361039</item>
+        <item>1.4029853366735685</item>
+        <item>1.4143558385705772</item>
+        <item>1.3862117802397131</item>
+        <item>1.4335759753555026</item>
+        <item>1.4085000052270242</item>
+    </string-array>
+    <string-array name="districts_long">
+        <item>103.85814605518453</item>
+        <item>103.8338273671011</item>
+        <item>103.81030975845852</item>
+        <item>103.81817291165328</item>
+        <item>103.77459921491516</item>
+        <item>103.84704031598937</item>
+        <item>103.85150351179016</item>
+        <item>103.84463705671203</item>
+        <item>103.83794226301086</item>
+        <item>103.81751455915344</item>
+        <item>103.82146277082336</item>
+        <item>103.85510840070617</item>
+        <item>103.89081396711242</item>
+        <item>103.90094198835266</item>
+        <item>103.9036885703839</item>
+        <item>103.94093908918273</item>
+        <item>103.99009934875164</item>
+        <item>103.92721406782027</item>
+        <item>103.89721249648301</item>
+        <item>103.8384025365001</item>
+        <item>103.76630475817979</item>
+        <item>103.70622327624619</item>
+        <item>103.76527478991807</item>
+        <item>103.70513539571539</item>
+        <item>103.77026922110554</item>
+        <item>103.81169681944039</item>
+        <item>103.82588750723835</item>
+        <item>103.87389451256035</item>
     </string-array>
     <string name="title_activity_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>

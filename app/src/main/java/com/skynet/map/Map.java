@@ -214,7 +214,6 @@ public class Map {
                 if (mapView.getLayerManager().getLayers().contains(this)) {
                     {
                         Toast.makeText(activity, this.getName(), Toast.LENGTH_LONG).show();
-                        setPrevious(this);
                         Bitmap bitmapRed;
                         Bitmap bitmapGrey;
                         Drawable marker = activity.getResources().getDrawable(R.drawable.marker_green, null);
@@ -230,7 +229,6 @@ public class Map {
                         this.setBitmap(bitmapRed);
                         setPrevious(this);
                         mapView.getModel().mapViewPosition.animateTo(getPosition());
-                        Toast.makeText(activity, this.getName(), Toast.LENGTH_LONG).show();
                     }
                     return true;
                 }

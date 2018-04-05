@@ -86,13 +86,14 @@ public class MainActivity extends AppCompatActivity
         dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String tgt = dropDown.getSelectedItem().toString();
-                Log.i("Selected item ", tgt);
+                //Double tgt = dropDown.getSelectedItem().toString();
+                Double dis_lat = Double.parseDouble(getResources().getStringArray(R.array.districts_lat)[dropDown.getSelectedItemPosition()]);
+                Double dis_long = Double.parseDouble(getResources().getStringArray(R.array.districts_long)[dropDown.getSelectedItemPosition()]);
+                map.setPosition(dis_lat, dis_long);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
         // UI drawer
