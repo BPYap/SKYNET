@@ -1,5 +1,6 @@
 package com.skynet.map;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -48,20 +49,17 @@ public class Map {
     private byte min_zoom_level;
     private byte max_zoom_level;
 
+    private Activity activity;
     private MapView mapView;
     private MapFile mapFile;
     private PreferencesFacade preferencesFacade;
     private List<TileCache> tileCaches = new ArrayList<>();
 
-    private Context context;
-
     private TappableMarker previous;
 
-    public Map(AppCompatActivity activity, View view, File map_file,Context context) {
-
-
+    public Map(AppCompatActivity activity, View view, File map_file) {
+        this.activity = activity;
         mapFile = new MapFile(map_file);
-        this.context = context;
         createSharedPreferences(activity);
         createMapViews(view);
         createTileCaches(activity);
@@ -96,26 +94,9 @@ public class Map {
                 this.mapView.getModel().mapViewPosition,
                 mapFile,
                 InternalRenderTheme.OSMARENDER, false, true, false);
-
-
         Log.w("MAP", (Double.toString(tileRendererLayer.getMapDataStore().boundingBox().maxLatitude)));
         this.mapView.getLayerManager().getLayers().add(tileRendererLayer);
-
-        // to have all the hotspot here and put the marker on
-        Hotspot[] query = new Hotspot[0];
-        try {
-            query = new AsycQuery(AppDatabase.getInstance(context)).execute().get();
-        } catch (InterruptedException e) {
-            Log.w("Map", "Interrupted Exception");
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            Log.w("Map", "Execution Exception");
-            e.printStackTrace();
-        }
-        for (Hotspot hotspot : query) {
-            createPositionMarker(hotspot.getLatitude(), hotspot.getLongitude(), hotspot.getName());
-            Log.i("Put marker on", hotspot.getName()); //debug
-        }
+        createMarkers();
     }
 
     private void createControls() {
@@ -166,10 +147,6 @@ public class Map {
         mapView.getModel().mapViewPosition.setMapLimit(BoundingBox.fromString(bounding_box));
     }
 
-    public TappableMarker getPrevious(){return previous;}
-
-    public void setPrevious(TappableMarker marker){this.previous = marker;}
-
     public void save_preferences() {
         mapView.getModel().save(this.preferencesFacade);
         this.preferencesFacade.save();
@@ -183,12 +160,28 @@ public class Map {
 
 
     //create marker
-    private void createPositionMarker(double paramDouble1, double paramDouble2, String name) {
-        final LatLong localLatLong = new LatLong(paramDouble1, paramDouble2);
-        TappableMarker positionMarker = new TappableMarker(R.drawable.marker_green, localLatLong, name);
-        mapView.getLayerManager().getLayers().add(positionMarker);
+    private void createMarkers() {
+        Hotspot[] query = new Hotspot[0];
+        try {
+            query = new AsycQuery(AppDatabase.getInstance(activity)).execute().get();
+        } catch (InterruptedException e) {
+            Log.w("Map", "Interrupted Exception");
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            Log.w("Map", "Execution Exception");
+            e.printStackTrace();
+        }
+        for (Hotspot hotspot : query) {
+            final LatLong localLatLong = new LatLong(hotspot.getLatitude(), hotspot.getLongitude());
+            TappableMarker positionMarker = new TappableMarker(R.drawable.marker_green, localLatLong, hotspot.getName());
+            mapView.getLayerManager().getLayers().add(positionMarker);
+            Log.i("Put marker on", hotspot.getName()); //debug
+        }
     }
 
+    public TappableMarker getPrevious(){return previous;}
+
+    public void setPrevious(TappableMarker marker){this.previous = marker;}
 
     public class TappableMarker extends Marker {
 
@@ -199,9 +192,10 @@ public class Map {
         }
 
         public TappableMarker(int icon, LatLong localLatLong, String name) {
-            super(localLatLong, AndroidGraphicFactory.convertToBitmap(context.getResources().getDrawable(icon)),
-                    1 * (AndroidGraphicFactory.convertToBitmap(context.getResources().getDrawable(icon)).getWidth()) / 2,
-                    -1 * (AndroidGraphicFactory.convertToBitmap(context.getApplicationContext().getResources().getDrawable(icon)).getHeight()) / 2);
+            super(localLatLong, AndroidGraphicFactory.convertToBitmap(activity.getResources().getDrawable(icon)),
+                    1 * (AndroidGraphicFactory.convertToBitmap(activity.getResources().getDrawable(icon)).getWidth()) / 2,
+                    -1 * (AndroidGraphicFactory.convertToBitmap(activity.getApplicationContext().getResources().
+                            getDrawable(icon)).getHeight()) / 2);
             this.text = name;
         }
 
@@ -209,7 +203,9 @@ public class Map {
         public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) {
             Bitmap bitmapRed;
             Bitmap bitmapGrey;
-            Drawable drawableWhite = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? context.getResources().getDrawable(R.drawable.marker_white) : context.getResources().getDrawable(R.drawable.marker_white);
+            Drawable drawableWhite = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ?
+                    activity.getResources().getDrawable(R.drawable.marker_white)
+                    : activity.getResources().getDrawable(R.drawable.marker_white);
             Paint paint = new Paint();
             paint.setAntiAlias(true);
             paint.setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY));
@@ -226,7 +222,7 @@ public class Map {
                         }
                         this.setBitmap(bitmapRed);
                         setPrevious(this);
-                        Toast.makeText(context, this.getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, this.getName(), Toast.LENGTH_SHORT).show();
 
 
                     }
