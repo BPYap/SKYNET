@@ -187,13 +187,13 @@ public class Map {
         }
     }
 
+
     public TappableMarker getPrevious(){return previous;}
 
     public void setPrevious(TappableMarker marker){this.previous = marker;}
 
     public class TappableMarker extends Marker {
 
-        int i=0;
         private String text;
         public String getName() {
             return this.text;
@@ -203,33 +203,38 @@ public class Map {
             super(localLatLong, AndroidGraphicFactory.convertToBitmap(activity.getResources().getDrawable(icon, null)),
                     1 * (AndroidGraphicFactory.convertToBitmap(activity.getResources().getDrawable(icon,null)).getWidth()) / 2,
                     -1 * (AndroidGraphicFactory.convertToBitmap(activity.getApplicationContext().getResources().
-                            getDrawable(icon)).getHeight()) / 2);
+                            getDrawable(icon,null)).getHeight()) / 2);
             this.text = name;
         }
 
         //on tap and return overlay bubble
         public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) {
-            Bitmap bitmapRed;
-            Bitmap bitmapGrey;
-            Drawable drawableWhite = activity.getResources().getDrawable(R.drawable.marker_white, null);
-            Paint paint = new Paint();
-            paint.setAntiAlias(true);
-            paint.setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY));
-            bitmapRed = AndroidGraphicFactory.convertToBitmap(drawableWhite, paint);
-            paint.setColorFilter(new PorterDuffColorFilter(android.graphics.Color.argb(255, 103, 122, 94), PorterDuff.Mode.MULTIPLY));
-            bitmapGrey = AndroidGraphicFactory.convertToBitmap(drawableWhite, paint);
-
             if (this.contains(layerXY, tapXY)) {
                 Log.d("Touch event", "triggered");
                 if (mapView.getLayerManager().getLayers().contains(this)) {
                     {
+                        Toast.makeText(activity, this.getName(), Toast.LENGTH_LONG).show();
+                        setPrevious(this);
+                        Bitmap bitmapRed;
+                        Bitmap bitmapGrey;
+                        Drawable marker = activity.getResources().getDrawable(R.drawable.marker_green, null);
+                        Paint paint = new Paint();
+                        paint.setAntiAlias(true);
+                        paint.setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY));
+                        bitmapRed = AndroidGraphicFactory.convertToBitmap(marker, paint);
+                        paint.setColorFilter(new PorterDuffColorFilter(android.graphics.Color.argb(255, 103, 122, 94), PorterDuff.Mode.MULTIPLY));
+                        bitmapGrey = AndroidGraphicFactory.convertToBitmap(marker, paint);
                         if (getPrevious() != null){
                             getPrevious().setBitmap(bitmapGrey);
                         }
                         this.setBitmap(bitmapRed);
+<<<<<<< HEAD
+
+=======
                         setPrevious(this);
                         mapView.getModel().mapViewPosition.animateTo(getPosition());
                         Toast.makeText(activity, this.getName(), Toast.LENGTH_LONG).show();
+>>>>>>> df9730713fa518f2a31307ed4efc70944d8052a3
                     }
                     return true;
                 }
