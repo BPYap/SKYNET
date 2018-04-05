@@ -105,8 +105,10 @@ public class Map {
         try {
             query = new AsycQuery(AppDatabase.getInstance(context)).execute().get();
         } catch (InterruptedException e) {
+            Log.w("Map", "Interrupted Exception");
             e.printStackTrace();
         } catch (ExecutionException e) {
+            Log.w("Map", "Execution Exception");
             e.printStackTrace();
         }
         for (Hotspot hotspot : query) {
