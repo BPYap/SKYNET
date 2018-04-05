@@ -229,7 +229,6 @@ public class Map {
                         this.setBitmap(bitmapRed);
                         setPrevious(this);
                         mapView.getModel().mapViewPosition.animateTo(getPosition());
-
                     }
                     return true;
                 }
