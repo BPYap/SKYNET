@@ -12,7 +12,7 @@ public class Settings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.settings);
         Switch switch1 = (Switch) findViewById(R.id.switch1);
         Switch switch2 = (Switch) findViewById(R.id.switch2);
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
