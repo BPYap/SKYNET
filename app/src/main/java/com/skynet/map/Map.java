@@ -118,9 +118,9 @@ public class Map {
 
     public void setPosition(double latitude, double longitude) {
         LatLong latLong = new LatLong(latitude, longitude);
+        byte zoom_level = (byte)((int)max_zoom_level - 1);
         mapView.getModel().mapViewPosition.animateTo(latLong);
-        MapPosition map_pos = new MapPosition(latLong, (byte)((int)max_zoom_level - 1));
-        mapView.getModel().mapViewPosition.setMapPosition(map_pos);
+        mapView.getModel().mapViewPosition.setZoomLevel(zoom_level);
     }
 
     public byte getZoomLevelDefault() {
@@ -214,7 +214,6 @@ public class Map {
                 if (mapView.getLayerManager().getLayers().contains(this)) {
                     {
                         Toast.makeText(activity, this.getName(), Toast.LENGTH_LONG).show();
-                        setPrevious(this);
                         Bitmap bitmapRed;
                         Bitmap bitmapGrey;
                         Drawable marker = activity.getResources().getDrawable(R.drawable.marker_green, null);
@@ -230,7 +229,6 @@ public class Map {
                         this.setBitmap(bitmapRed);
                         setPrevious(this);
                         mapView.getModel().mapViewPosition.animateTo(getPosition());
-                        Toast.makeText(activity, this.getName(), Toast.LENGTH_LONG).show();
                     }
                     return true;
                 }
