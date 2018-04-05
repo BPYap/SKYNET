@@ -227,13 +227,8 @@ public class Map {
                             getPrevious().setBitmap(bitmapGrey);
                         }
                         this.setBitmap(bitmapRed);
-<<<<<<< HEAD
-
-=======
                         setPrevious(this);
                         mapView.getModel().mapViewPosition.animateTo(getPosition());
-                        Toast.makeText(activity, this.getName(), Toast.LENGTH_LONG).show();
->>>>>>> df9730713fa518f2a31307ed4efc70944d8052a3
                     }
                     return true;
                 }
