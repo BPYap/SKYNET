@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mLocationFetcher.get_location_update(MainActivity.this);
                 map.setPosition(mLocation.getLatitude(), mLocation.getLongitude());
             }
         });
