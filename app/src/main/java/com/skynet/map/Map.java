@@ -28,7 +28,6 @@ import org.mapsforge.map.android.util.AndroidPreferences;
 import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.layer.cache.TileCache;
-import org.mapsforge.map.layer.hills.HillsRenderConfig;
 import org.mapsforge.map.layer.overlay.Marker;
 import org.mapsforge.map.layer.renderer.TileRendererLayer;
 import org.mapsforge.map.model.IMapViewPosition;
@@ -42,8 +41,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.support.v4.content.ContextCompat.getDrawable;
-
 
 public class Map {
     private String bounding_box;
@@ -131,47 +128,15 @@ public class Map {
         }
     }
 
-    protected void purgeTileCaches() {
-        for (TileCache tileCache : tileCaches) {
-            tileCache.purge();
-        }
-        tileCaches.clear();
-    }
-
-    protected void redrawLayers() {
-        mapView.getLayerManager().redrawLayers();
-    }
-
-    protected HillsRenderConfig getHillsRenderConfig() {
-        return null;
-    }
-
-    public byte getZoomLevelDefault() {
-        return default_zoom_level;
-    }
-
-    public void setZoomLevelDefault(int level) {
-        default_zoom_level = (byte) level;
-        mapView.getModel().mapViewPosition.setZoomLevel(default_zoom_level);
-    }
-
-    public byte getZoomLevelMin() {
-        return min_zoom_level;
-    }
-
     public void setZoomLevelMin(int level) {
         min_zoom_level = (byte) level;
         mapView.getMapZoomControls().setZoomLevelMin(min_zoom_level);
     }
 
-    public byte getZoomLevelMax() { return max_zoom_level; }
-
     public void setZoomLevelMax(int level) {
         max_zoom_level = (byte) level;
         mapView.getMapZoomControls().setZoomLevelMax(max_zoom_level);
     }
-
-    public String getBoundingBox() { return bounding_box; }
 
     public void setBounding_box(String bounding_box) {
         this.bounding_box = bounding_box;
@@ -189,7 +154,6 @@ public class Map {
         tileCaches.clear();
     }
 
-
     //create marker
     private void createPositionMarker(double paramDouble1, double paramDouble2, String name) {
         final LatLong localLatLong = new LatLong(paramDouble1, paramDouble2);
@@ -197,9 +161,7 @@ public class Map {
         mapView.getLayerManager().getLayers().add(positionMarker);
     }
 
-
     public class TappableMarker extends Marker {
-
         int i=0;
         private String text;
         public String getName() {
@@ -239,8 +201,6 @@ public class Map {
                             this.setBitmap(bitmapGrey);}
                         i++;
                         Toast.makeText(context, this.getName(), Toast.LENGTH_SHORT).show();
-
-
                     }
                     return true;
                 }
