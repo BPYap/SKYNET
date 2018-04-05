@@ -11,6 +11,7 @@ public class AsycQuery extends AsyncTask<Void, Void, Hotspot[]> {
 
     private AppDatabase appDatabase;
     private Hotspot[] hotspots;
+
     public AsycQuery(AppDatabase appDatabase){
         this.appDatabase = appDatabase;
     }
