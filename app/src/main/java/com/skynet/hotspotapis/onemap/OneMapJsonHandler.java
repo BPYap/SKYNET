@@ -1,4 +1,4 @@
-package com.skynet.onemap;
+package com.skynet.hotspotapis.onemap;
 
 import android.content.Context;
 import android.util.Log;
