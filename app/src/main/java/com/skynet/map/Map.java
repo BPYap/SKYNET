@@ -28,7 +28,6 @@ import org.mapsforge.map.android.util.AndroidPreferences;
 import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.layer.cache.TileCache;
-import org.mapsforge.map.layer.hills.HillsRenderConfig;
 import org.mapsforge.map.layer.overlay.Marker;
 import org.mapsforge.map.layer.renderer.TileRendererLayer;
 import org.mapsforge.map.model.IMapViewPosition;
@@ -42,8 +41,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.support.v4.content.ContextCompat.getDrawable;
-
 
 public class Map {
     private String bounding_box;
@@ -135,21 +132,6 @@ public class Map {
         if (center.equals(new LatLong(0, 0))) {
             mvp.setMapPosition(this.getInitialPosition());
         }
-    }
-
-    protected void purgeTileCaches() {
-        for (TileCache tileCache : tileCaches) {
-            tileCache.purge();
-        }
-        tileCaches.clear();
-    }
-
-    protected void redrawLayers() {
-        mapView.getLayerManager().redrawLayers();
-    }
-
-    protected HillsRenderConfig getHillsRenderConfig() {
-        return null;
     }
 
     public byte getZoomLevelDefault() {
