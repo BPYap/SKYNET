@@ -30,7 +30,7 @@ public class OneMapJsonHandler implements ProcessHotspotJson {
     private JSONObject json;
 
 
-    protected OneMapJsonHandler() {
+    public OneMapJsonHandler() {
     }
 
     @Override
