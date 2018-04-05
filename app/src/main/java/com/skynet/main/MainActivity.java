@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     private LocationFetcher mLocationFetcher;
+    private Location mLocation;
     private Map map;
 
     // Activity Lifecycle
@@ -58,14 +59,12 @@ public class MainActivity extends AppCompatActivity
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
                     // code to handle null location
-
                     return;
                 }
-
-                Location location = locationResult.getLastLocation();
+                mLocation = locationResult.getLastLocation();
                 // code to use location data
-                Log.i("Lat:",Double.toString(location.getLatitude()));
-                Log.i("Long:",Double.toString(location.getLongitude()));
+                Log.i("Lat:",Double.toString(mLocation.getLatitude()));
+                Log.i("Long:",Double.toString(mLocation.getLongitude()));
             }
         };
         mLocationFetcher = LocationFetcher.getInstance(this, locationCallback);
@@ -78,8 +77,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                map.setPosition(mLocation.getLatitude(), mLocation.getLongitude());
             }
         });
         // UI dropdown menu (for navigating to location)

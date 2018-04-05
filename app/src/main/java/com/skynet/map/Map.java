@@ -115,6 +115,12 @@ public class Map {
         }
     }
 
+    public void setPosition(double latitude, double longitude) {
+        LatLong latLong = new LatLong(latitude, longitude);
+        MapPosition map_pos = new MapPosition(latLong, default_zoom_level);
+        mapView.getModel().mapViewPosition.setMapPosition(map_pos);
+    }
+
     public byte getZoomLevelDefault() {
         return default_zoom_level;
     }
