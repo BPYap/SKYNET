@@ -221,6 +221,7 @@ public class Map {
                         }
                         this.setBitmap(bitmapRed);
                         setPrevious(this);
+                        mapView.getModel().mapViewPosition.animateTo(getPosition());
                         Toast.makeText(activity, this.getName(), Toast.LENGTH_LONG).show();
                     }
                     return true;
