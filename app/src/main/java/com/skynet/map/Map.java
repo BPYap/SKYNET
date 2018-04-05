@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.skynet.hotspotdatabase.AppDatabase;
 import com.skynet.hotspotdatabase.AsycQuery;
+import com.skynet.hotspotdatabase.DatabaseManager;
 import com.skynet.hotspotdatabase.Hotspot;
 import com.skynet.main.R;
 
@@ -161,21 +162,21 @@ public class Map {
 
     //create marker
     private void createMarkers() {
-        Hotspot[] query = new Hotspot[0];
         try {
-            query = new AsycQuery(AppDatabase.getInstance(activity)).execute().get();
-        } catch (InterruptedException e) {
-            Log.w("Map", "Interrupted Exception");
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            Log.w("Map", "Execution Exception");
-            e.printStackTrace();
-        }
-        for (Hotspot hotspot : query) {
-            final LatLong localLatLong = new LatLong(hotspot.getLatitude(), hotspot.getLongitude());
-            TappableMarker positionMarker = new TappableMarker(R.drawable.marker_green, localLatLong, hotspot.getName());
-            mapView.getLayerManager().getLayers().add(positionMarker);
-            Log.i("Put marker on", hotspot.getName()); //debug
+            Hotspot[] query = DatabaseManager.getDatabaseControl().getAllHotspots(activity);
+            int pollCount = 0;
+            do {
+                Thread.sleep(5000);
+                Log.d("Map", "Waiting for Hotspot retrieval... Attempt #"+ ++pollCount);
+            } while (query == null && pollCount < 5);
+            for (Hotspot hotspot : query) {
+                final LatLong localLatLong = new LatLong(hotspot.getLatitude(), hotspot.getLongitude());
+                TappableMarker positionMarker = new TappableMarker(R.drawable.marker_green, localLatLong, hotspot.getName());
+                mapView.getLayerManager().getLayers().add(positionMarker);
+                Log.i("Put marker on", hotspot.getName()); //debug
+            }
+        }catch (Exception e) {
+            Log.d("Map", "Unable to retrieve hotspot data");
         }
     }
 
