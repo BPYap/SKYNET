@@ -1,4 +1,4 @@
-package com.skynet.hotspotdatabase;
+package com.skynet.onemap;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,6 +6,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.skynet.hotspotdatabase.Hotspot;
+import com.skynet.hotspotdatabase.ProcessHotspotJson;
+import com.skynet.hotspotdatabase.RequestQueueSingleton;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
