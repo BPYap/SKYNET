@@ -58,7 +58,11 @@ public class Map {
 
     private Context context;
 
+    private TappableMarker previous;
+
     public Map(AppCompatActivity activity, View view, File map_file,Context context) {
+
+
         mapFile = new MapFile(map_file);
         this.context = context;
         createSharedPreferences(activity);
@@ -180,6 +184,10 @@ public class Map {
         mapView.getModel().mapViewPosition.setMapLimit(BoundingBox.fromString(bounding_box));
     }
 
+    public TappableMarker getPrevious(){return previous;}
+
+    public void setPrevious(TappableMarker marker){this.previous = marker;}
+
     public void save_preferences() {
         mapView.getModel().save(this.preferencesFacade);
         this.preferencesFacade.save();
@@ -224,25 +232,19 @@ public class Map {
             paint.setAntiAlias(true);
             paint.setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY));
             bitmapRed = AndroidGraphicFactory.convertToBitmap(drawableWhite, paint);
-            paint.setColorFilter(new PorterDuffColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY));
+            paint.setColorFilter(new PorterDuffColorFilter(android.graphics.Color.argb(255, 103, 122, 94), PorterDuff.Mode.MULTIPLY));
             bitmapGrey = AndroidGraphicFactory.convertToBitmap(drawableWhite, paint);
 
             if (this.contains(layerXY, tapXY)) {
-                Log.d("LALA", "succeed");
+                Log.d("Touch event", "triggered");
                 if (mapView.getLayerManager().getLayers().contains(this)) {
                     {
-//                    if (this.getBitmap() != null){
-//                        SimplestMapViewer.this.mapView.getLayerManager().getLayers().remove(this);
-//                        SimplestMapViewer.this.mapView.getLayerManager().redrawLayers();}
-//                    else
+                        if (getPrevious() != null){
+                            getPrevious().setBitmap(bitmapGrey);
+                        }
                         this.setBitmap(bitmapRed);
-                        if (i>0)
-                        {Log.d("LALA", "here");
-                            this.setBitmap(bitmapGrey);}
-                        i++;
+                        setPrevious(this);
                         Toast.makeText(context, this.getName(), Toast.LENGTH_SHORT).show();
-
-
                     }
                     return true;
                 }
