@@ -193,8 +193,8 @@ public class Map {
         }
 
         public TappableMarker(int icon, LatLong localLatLong, String name) {
-            super(localLatLong, AndroidGraphicFactory.convertToBitmap(activity.getResources().getDrawable(icon)),
-                    1 * (AndroidGraphicFactory.convertToBitmap(activity.getResources().getDrawable(icon)).getWidth()) / 2,
+            super(localLatLong, AndroidGraphicFactory.convertToBitmap(activity.getResources().getDrawable(icon, null)),
+                    1 * (AndroidGraphicFactory.convertToBitmap(activity.getResources().getDrawable(icon,null)).getWidth()) / 2,
                     -1 * (AndroidGraphicFactory.convertToBitmap(activity.getApplicationContext().getResources().
                             getDrawable(icon)).getHeight()) / 2);
             this.text = name;
@@ -204,9 +204,7 @@ public class Map {
         public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) {
             Bitmap bitmapRed;
             Bitmap bitmapGrey;
-            Drawable drawableWhite = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ?
-                    activity.getResources().getDrawable(R.drawable.marker_white)
-                    : activity.getResources().getDrawable(R.drawable.marker_white);
+            Drawable drawableWhite = activity.getResources().getDrawable(R.drawable.marker_white, null);
             Paint paint = new Paint();
             paint.setAntiAlias(true);
             paint.setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY));
@@ -223,9 +221,7 @@ public class Map {
                         }
                         this.setBitmap(bitmapRed);
                         setPrevious(this);
-                        Toast.makeText(activity, this.getName(), Toast.LENGTH_SHORT).show();
-
-
+                        Toast.makeText(activity, this.getName(), Toast.LENGTH_LONG).show();
                     }
                     return true;
                 }
