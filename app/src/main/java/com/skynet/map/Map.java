@@ -118,7 +118,8 @@ public class Map {
 
     public void setPosition(double latitude, double longitude) {
         LatLong latLong = new LatLong(latitude, longitude);
-        MapPosition map_pos = new MapPosition(latLong, default_zoom_level);
+        mapView.getModel().mapViewPosition.animateTo(latLong);
+        MapPosition map_pos = new MapPosition(latLong, (byte)((int)max_zoom_level - 1));
         mapView.getModel().mapViewPosition.setMapPosition(map_pos);
     }
 
@@ -229,6 +230,7 @@ public class Map {
                         this.setBitmap(bitmapRed);
                         setPrevious(this);
                         mapView.getModel().mapViewPosition.animateTo(getPosition());
+
                     }
                     return true;
                 }
