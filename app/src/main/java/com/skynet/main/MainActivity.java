@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,6 +31,7 @@ public class MainActivity extends AppCompatActivity
     private LocationFetcher mLocationFetcher;
     private Location mLocation;
     private Map map;
+    private int radius = 200;
 
     // Activity Lifecycle
     @Override
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 mLocationFetcher.get_location_update(MainActivity.this);
                 map.setPosition(mLocation.getLatitude(), mLocation.getLongitude());
+                map.markme(mLocation.getLatitude(), mLocation.getLongitude(),radius);
             }
         });
         // UI dropdown menu (for navigating to location)
