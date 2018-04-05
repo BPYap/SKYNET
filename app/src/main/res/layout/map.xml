@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.skynet.main.MainActivity"
-    tools:showIn="@layout/app_bar_main">
-
+    tools:showIn="@layout/map_and_widget">
 
 
     <org.mapsforge.map.android.view.MapView
