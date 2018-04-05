@@ -1,35 +1,31 @@
 package com.skynet.map;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.skynet.hotspotdatabase.AppDatabase;
-import com.skynet.hotspotdatabase.AsycQuery;
 import com.skynet.hotspotdatabase.DatabaseManager;
 import com.skynet.hotspotdatabase.Hotspot;
 import com.skynet.main.R;
-
-
 import org.mapsforge.core.graphics.Bitmap;
+import org.mapsforge.core.graphics.Style;
 import org.mapsforge.core.model.BoundingBox;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.core.model.MapPosition;
 import org.mapsforge.core.model.Point;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
+import org.mapsforge.map.android.layers.MyLocationOverlay;
 import org.mapsforge.map.android.util.AndroidPreferences;
 import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.layer.cache.TileCache;
+import org.mapsforge.map.layer.overlay.Circle;
 import org.mapsforge.map.layer.overlay.Marker;
 import org.mapsforge.map.layer.renderer.TileRendererLayer;
 import org.mapsforge.map.model.IMapViewPosition;
@@ -40,7 +36,6 @@ import org.mapsforge.map.rendertheme.InternalRenderTheme;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -57,6 +52,31 @@ public class Map {
     private List<TileCache> tileCaches = new ArrayList<>();
 
     private TappableMarker previous;
+    private MyLocationOverlay myLocationOverlay;
+
+    public void markme(double latitude, double longitude, int radius){
+        LatLong latLong = new LatLong(latitude, longitude);
+        Drawable drawable = activity.getResources().getDrawable(R.drawable.ic_maps_indicator_current_position,null);
+        Marker position_marker = new Marker(latLong, AndroidGraphicFactory.convertToBitmap(drawable), 0, 0);
+
+        // circle to show the location accuracy (optional)
+        //key in the
+        Circle circle = new Circle(latLong, radius,
+                getPaint(AndroidGraphicFactory.INSTANCE.createColor(48, 0, 0, 255), 0, Style.FILL),
+                getPaint(AndroidGraphicFactory.INSTANCE.createColor(160, 0, 0, 255), 2, Style.STROKE));
+
+        // create the overlay
+        this.myLocationOverlay = new MyLocationOverlay(position_marker, circle);
+        mapView.getLayerManager().getLayers().add(this.myLocationOverlay);
+    }
+
+    private static org.mapsforge.core.graphics.Paint getPaint(int color, int strokeWidth, Style style) {
+        org.mapsforge.core.graphics.Paint paint = AndroidGraphicFactory.INSTANCE.createPaint();
+        paint.setColor(color);
+        paint.setStrokeWidth(strokeWidth);
+        paint.setStyle(style);
+        return paint;
+    }
 
     public Map(AppCompatActivity activity, View view, File map_file) {
         this.activity = activity;
@@ -216,7 +236,7 @@ public class Map {
                         Bitmap bitmapRed;
                         Bitmap bitmapGrey;
                         Drawable marker = activity.getResources().getDrawable(R.drawable.marker_green, null);
-                        Paint paint = new Paint();
+                        android.graphics.Paint paint = new android.graphics.Paint();
                         paint.setAntiAlias(true);
                         paint.setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY));
                         bitmapRed = AndroidGraphicFactory.convertToBitmap(marker, paint);
