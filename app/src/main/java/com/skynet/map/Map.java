@@ -118,9 +118,9 @@ public class Map {
 
     public void setPosition(double latitude, double longitude) {
         LatLong latLong = new LatLong(latitude, longitude);
+        byte zoom_level = (byte)((int)max_zoom_level - 1);
         mapView.getModel().mapViewPosition.animateTo(latLong);
-        MapPosition map_pos = new MapPosition(latLong, (byte)((int)max_zoom_level - 1));
-        mapView.getModel().mapViewPosition.setMapPosition(map_pos);
+        mapView.getModel().mapViewPosition.setZoomLevel(zoom_level);
     }
 
     public byte getZoomLevelDefault() {
