@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity
     private Location mLocation;
     private Map map;
     private int radius = 200;
+    private int i=0;
 
     // Activity Lifecycle
     @Override
@@ -79,7 +80,13 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 mLocationFetcher.get_location_update(MainActivity.this);
                 map.setPosition(mLocation.getLatitude(), mLocation.getLongitude());
-                map.markme(mLocation.getLatitude(), mLocation.getLongitude(),radius);
+                if(i==0){
+                    map.first_mark(mLocation.getLatitude(), mLocation.getLongitude(),radius);
+                    i++;
+                }else{
+                    map.markme(mLocation.getLatitude(), mLocation.getLongitude(),radius);
+                }
+
             }
         });
         // UI dropdown menu (for navigating to location)

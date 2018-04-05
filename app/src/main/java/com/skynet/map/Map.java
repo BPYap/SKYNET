@@ -54,7 +54,7 @@ public class Map {
     private TappableMarker previous;
     private MyLocationOverlay myLocationOverlay;
 
-    public void markme(double latitude, double longitude, int radius){
+    public void first_mark(double latitude, double longitude, int radius){
         LatLong latLong = new LatLong(latitude, longitude);
         Drawable drawable = activity.getResources().getDrawable(R.drawable.ic_maps_indicator_current_position,null);
         Marker position_marker = new Marker(latLong, AndroidGraphicFactory.convertToBitmap(drawable), 0, 0);
@@ -68,6 +68,11 @@ public class Map {
         // create the overlay
         this.myLocationOverlay = new MyLocationOverlay(position_marker, circle);
         mapView.getLayerManager().getLayers().add(this.myLocationOverlay);
+    }
+
+    public void markme(double latitude, double longitude, int radius){
+        this.myLocationOverlay.setPosition(latitude,longitude,radius);
+
     }
 
     private static org.mapsforge.core.graphics.Paint getPaint(int color, int strokeWidth, Style style) {
