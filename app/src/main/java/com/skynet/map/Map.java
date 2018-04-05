@@ -214,7 +214,6 @@ public class Map {
                 if (mapView.getLayerManager().getLayers().contains(this)) {
                     {
                         Toast.makeText(activity, this.getName(), Toast.LENGTH_LONG).show();
-                        setPrevious(this);
                         Bitmap bitmapRed;
                         Bitmap bitmapGrey;
                         Drawable marker = activity.getResources().getDrawable(R.drawable.marker_green, null);
