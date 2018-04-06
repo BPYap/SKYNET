@@ -1,5 +1,6 @@
 package com.skynet.utility;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
@@ -30,10 +31,9 @@ public class Utility {
             } else {
                 Log.i("Utility", filename + " already exists. No action needed");
             }
-        } catch(IOException e) {
+        } catch (IOException e) {
             Log.e("tag", "Failed to copy asset file: " + filename, e);
-        }
-        finally {
+        } finally {
             if (in != null) {
                 try {
                     in.close();
@@ -51,7 +51,6 @@ public class Utility {
         }
         return outFile;
     }
-
     private static void copyFile(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
         int read;
@@ -59,4 +58,5 @@ public class Utility {
             out.write(buffer, 0, read);
         }
     }
+
 }

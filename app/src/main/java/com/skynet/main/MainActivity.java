@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
@@ -32,7 +33,6 @@ public class MainActivity extends AppCompatActivity
     private Location mLocation;
     private Map map;
     private int radius = 200;
-    private int i=0;
 
     // Activity Lifecycle
     @Override
@@ -69,7 +69,11 @@ public class MainActivity extends AppCompatActivity
             }
         };
         mLocationFetcher = LocationFetcher.getInstance(this, locationCallback);
+        setupUI();
 
+    }
+
+    private void setupUI() {
         // UI toolbar (dunno where)
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,13 +84,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 mLocationFetcher.get_location_update(MainActivity.this);
                 map.setPosition(mLocation.getLatitude(), mLocation.getLongitude());
-                if(i==0){
-                    map.first_mark(mLocation.getLatitude(), mLocation.getLongitude(),radius);
-                    i++;
-                }else{
-                    map.markme(mLocation.getLatitude(), mLocation.getLongitude(),radius);
-                }
-
+                map.markme(mLocation.getLatitude(), mLocation.getLongitude(),radius);
             }
         });
         // UI dropdown menu (for navigating to location)
@@ -112,6 +110,26 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        // UI seekbar (for radius)
+        SeekBar radiusSeekbar = (SeekBar)findViewById(R.id.radiusSeekbar);
+        radiusSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int increment = Integer.parseInt(getString(R.string.radius_incr));
+                radius = seekBar.getProgress()*increment;
+                Log.i("MainActivity", "seekbar set radius to "+Integer.toString(radius));
+            }
+        });
     }
 
     @Override
@@ -149,13 +167,21 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-       if (id == R.id.nav_refresh) {
+        if (id == R.id.nav_refresh) {
             // re-fetch the json file
         } else if (id == R.id.nav_about) {
             // static page separate activity
         } else if (id == R.id.nav_settings) {
-            // enter setting page
-           startActivity(new Intent(MainActivity.this, Settings.class));
+            // show seekbar radius
+           SeekBar radiusSeekbar = (SeekBar)findViewById(R.id.radiusSeekbar);
+           if(radiusSeekbar.getVisibility()==View.VISIBLE)
+           {
+               radiusSeekbar.setVisibility(View.INVISIBLE);
+           }
+           else
+           {
+               radiusSeekbar.setVisibility(View.VISIBLE);
+           }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

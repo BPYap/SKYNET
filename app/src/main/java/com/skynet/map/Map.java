@@ -165,23 +165,30 @@ public class Map {
 
     //Marker
     public void first_mark(double latitude, double longitude, int radius){
-        LatLong latLong = new LatLong(latitude, longitude);
-        Drawable drawable = activity.getResources().getDrawable(R.drawable.ic_maps_indicator_current_position,null);
-        Marker position_marker = new Marker(latLong, AndroidGraphicFactory.convertToBitmap(drawable), 0, 0);
-
-        // circle to show the location accuracy (optional)
-        //key in the
-        Circle circle = new Circle(latLong, radius,
-                getPaint(AndroidGraphicFactory.INSTANCE.createColor(48, 0, 0, 255), 0, Style.FILL),
-                getPaint(AndroidGraphicFactory.INSTANCE.createColor(160, 0, 0, 255), 2, Style.STROKE));
-
-        // create the overlay
-        this.myLocationOverlay = new MyLocationOverlay(position_marker, circle);
-        mapView.getLayerManager().getLayers().add(this.myLocationOverlay);
+        
     }
 
     public void markme(double latitude, double longitude, int radius){
-        this.myLocationOverlay.setPosition(latitude,longitude,radius);
+        if(this.myLocationOverlay==null)
+        {
+            LatLong latLong = new LatLong(latitude, longitude);
+            Drawable drawable = activity.getResources().getDrawable(R.drawable.ic_maps_indicator_current_position,null);
+            Marker position_marker = new Marker(latLong, AndroidGraphicFactory.convertToBitmap(drawable), 0, 0);
+
+            // circle to show the location accuracy (optional)
+            //key in the
+            Circle circle = new Circle(latLong, radius,
+                    getPaint(AndroidGraphicFactory.INSTANCE.createColor(48, 0, 0, 255), 0, Style.FILL),
+                    getPaint(AndroidGraphicFactory.INSTANCE.createColor(160, 0, 0, 255), 2, Style.STROKE));
+
+            // create the overlay
+            this.myLocationOverlay = new MyLocationOverlay(position_marker, circle);
+            mapView.getLayerManager().getLayers().add(this.myLocationOverlay);
+        }
+        else
+        {
+            this.myLocationOverlay.setPosition(latitude,longitude,radius);
+        }
 
     }
 

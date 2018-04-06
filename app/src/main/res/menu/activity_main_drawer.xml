@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
+
     <group
         android:id="@+id/group1"
         android:checkableBehavior="all">
@@ -21,6 +22,7 @@
                     android:title="About" />
             </menu>
         </item>
+
     </group>
 
 </menu>

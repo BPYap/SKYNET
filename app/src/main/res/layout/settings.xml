@@ -66,8 +66,8 @@
         android:layout_height="17dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:max="2000"
-        android:min="200"
+        android:max="10"
+        android:min="0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/switch2" />
 

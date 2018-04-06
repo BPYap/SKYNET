@@ -45,7 +45,9 @@ public class Settings extends AppCompatActivity {
         radiusAdjust.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Log.i("Progress", Integer.toString(progress));
+
+                int increment = Integer.parseInt(getString(R.string.radius_incr));
+                Log.i("Progress", Integer.toString(progress*increment));
             }
 
             @Override
