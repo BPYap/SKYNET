@@ -6,13 +6,16 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.skynet.main.MainActivity"
-    tools:showIn="@layout/map_and_widget">
+    tools:showIn="@layout/map_and_widget"
+    android:background="@color/colorAccent">
+
 
 
     <org.mapsforge.map.android.view.MapView
         android:id="@+id/mapView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:background="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
