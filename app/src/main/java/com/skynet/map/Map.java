@@ -241,7 +241,7 @@ public class Map {
                         Toast.makeText(activity, this.getName(), Toast.LENGTH_LONG).show();
                         Bitmap bitmapRed;
                         Bitmap bitmapGrey;
-                        Drawable marker = activity.getResources().getDrawable(R.drawable.marker_green, null);
+                        Drawable marker = activity.getResources().getDrawable(R.drawable.marker_white, null);
                         android.graphics.Paint paint = new android.graphics.Paint();
                         paint.setAntiAlias(true);
                         paint.setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY));
