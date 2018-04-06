@@ -51,37 +51,8 @@ public class Map {
     private PreferencesFacade preferencesFacade;
     private List<TileCache> tileCaches = new ArrayList<>();
 
-    private TappableMarker previous;
+    private TappableMarker last_tapped;
     private MyLocationOverlay myLocationOverlay;
-
-    public void first_mark(double latitude, double longitude, int radius){
-        LatLong latLong = new LatLong(latitude, longitude);
-        Drawable drawable = activity.getResources().getDrawable(R.drawable.ic_maps_indicator_current_position,null);
-        Marker position_marker = new Marker(latLong, AndroidGraphicFactory.convertToBitmap(drawable), 0, 0);
-
-        // circle to show the location accuracy (optional)
-        //key in the
-        Circle circle = new Circle(latLong, radius,
-                getPaint(AndroidGraphicFactory.INSTANCE.createColor(48, 0, 0, 255), 0, Style.FILL),
-                getPaint(AndroidGraphicFactory.INSTANCE.createColor(160, 0, 0, 255), 2, Style.STROKE));
-
-        // create the overlay
-        this.myLocationOverlay = new MyLocationOverlay(position_marker, circle);
-        mapView.getLayerManager().getLayers().add(this.myLocationOverlay);
-    }
-
-    public void markme(double latitude, double longitude, int radius){
-        this.myLocationOverlay.setPosition(latitude,longitude,radius);
-
-    }
-
-    private static org.mapsforge.core.graphics.Paint getPaint(int color, int strokeWidth, Style style) {
-        org.mapsforge.core.graphics.Paint paint = AndroidGraphicFactory.INSTANCE.createPaint();
-        paint.setColor(color);
-        paint.setStrokeWidth(strokeWidth);
-        paint.setStyle(style);
-        return paint;
-    }
 
     public Map(AppCompatActivity activity, View view, File map_file) {
         this.activity = activity;
@@ -103,7 +74,7 @@ public class Map {
         mapView.getModel().init(this.preferencesFacade);
         mapView.setClickable(true);
         mapView.getMapScaleBar().setVisible(true);
-        mapView.setBuiltInZoomControls(true);
+        mapView.setBuiltInZoomControls(false);
         mapView.getMapZoomControls().setAutoHide(true);
     }
 
@@ -143,7 +114,7 @@ public class Map {
 
     public void setPosition(double latitude, double longitude) {
         LatLong latLong = new LatLong(latitude, longitude);
-        byte zoom_level = (byte)((int)max_zoom_level - 3);
+        byte zoom_level = (byte)((int)max_zoom_level - 6);
         MapPosition mapPosition = new MapPosition(latLong, zoom_level);
         mapView.getModel().mapViewPosition.setMapPosition(mapPosition, true);
     }
@@ -163,14 +134,14 @@ public class Map {
 
     public void setZoomLevelMin(int level) {
         min_zoom_level = (byte) level;
-        mapView.getMapZoomControls().setZoomLevelMin(min_zoom_level);
+        mapView.setZoomLevelMin(min_zoom_level);
     }
 
     public byte getZoomLevelMax() { return max_zoom_level; }
 
     public void setZoomLevelMax(int level) {
         max_zoom_level = (byte) level;
-        mapView.getMapZoomControls().setZoomLevelMax(max_zoom_level);
+        mapView.setZoomLevelMax(max_zoom_level);
     }
 
     public String getBoundingBox() { return bounding_box; }
@@ -192,7 +163,36 @@ public class Map {
     }
 
 
-    //create marker
+    //Marker
+    public void first_mark(double latitude, double longitude, int radius){
+        LatLong latLong = new LatLong(latitude, longitude);
+        Drawable drawable = activity.getResources().getDrawable(R.drawable.ic_maps_indicator_current_position,null);
+        Marker position_marker = new Marker(latLong, AndroidGraphicFactory.convertToBitmap(drawable), 0, 0);
+
+        // circle to show the location accuracy (optional)
+        //key in the
+        Circle circle = new Circle(latLong, radius,
+                getPaint(AndroidGraphicFactory.INSTANCE.createColor(48, 0, 0, 255), 0, Style.FILL),
+                getPaint(AndroidGraphicFactory.INSTANCE.createColor(160, 0, 0, 255), 2, Style.STROKE));
+
+        // create the overlay
+        this.myLocationOverlay = new MyLocationOverlay(position_marker, circle);
+        mapView.getLayerManager().getLayers().add(this.myLocationOverlay);
+    }
+
+    public void markme(double latitude, double longitude, int radius){
+        this.myLocationOverlay.setPosition(latitude,longitude,radius);
+
+    }
+
+    private static org.mapsforge.core.graphics.Paint getPaint(int color, int strokeWidth, Style style) {
+        org.mapsforge.core.graphics.Paint paint = AndroidGraphicFactory.INSTANCE.createPaint();
+        paint.setColor(color);
+        paint.setStrokeWidth(strokeWidth);
+        paint.setStyle(style);
+        return paint;
+    }
+
     private void createMarkers() {
         try {
             Hotspot[] query = DatabaseManager.getDatabaseControl().getAllHotspots(activity);
@@ -213,9 +213,9 @@ public class Map {
     }
 
 
-    public TappableMarker getPrevious(){return previous;}
+    public TappableMarker getLast_tapped(){return last_tapped;}
 
-    public void setPrevious(TappableMarker marker){this.previous = marker;}
+    public void setLast_tapped(TappableMarker marker){this.last_tapped = marker;}
 
     public class TappableMarker extends Marker {
 
@@ -248,11 +248,11 @@ public class Map {
                         bitmapRed = AndroidGraphicFactory.convertToBitmap(marker, paint);
                         paint.setColorFilter(new PorterDuffColorFilter(android.graphics.Color.argb(255, 103, 122, 94), PorterDuff.Mode.MULTIPLY));
                         bitmapGrey = AndroidGraphicFactory.convertToBitmap(marker, paint);
-                        if (getPrevious() != null){
-                            getPrevious().setBitmap(bitmapGrey);
+                        if (getLast_tapped() != null){
+                            getLast_tapped().setBitmap(bitmapGrey);
                         }
                         this.setBitmap(bitmapRed);
-                        setPrevious(this);
+                        setLast_tapped(this);
                         mapView.getModel().mapViewPosition.animateTo(getPosition());
                     }
                     return true;
