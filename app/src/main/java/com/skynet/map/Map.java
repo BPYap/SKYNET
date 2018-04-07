@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 import com.skynet.hotspotdatabase.DatabaseManager;
 import com.skynet.hotspotdatabase.Hotspot;
 import com.skynet.main.R;
@@ -201,6 +200,7 @@ public class Map {
     }
 
     private void createMarkers() {
+        initialize_bitmap();
         try {
             Hotspot[] query = DatabaseManager.getDatabaseControl().getAllHotspots(activity);
             int pollCount = 0;
@@ -217,8 +217,38 @@ public class Map {
         }catch (Exception e) {
             Log.d("Map", "Unable to retrieve hotspot data");
         }
+
+//        Observer observer = new Observer() {
+//            @Override
+//            public void onChange() {
+//                int current_zoom_level = mapView.getModel().mapViewPosition.getZoomLevel();
+//                if (current_zoom_level <= 15){
+//                    Iterator<Layer> layer_iterator = mapView.getLayerManager().getLayers().iterator();
+//                    while (layer_iterator.hasNext()) {
+//                        Layer layer = layer_iterator.next();
+//                        if (layer instanceof TappableMarker) {
+//                            ((TappableMarker) layer).getBitmap().scaleTo(60, 100);
+//                        }
+//                    }
+//                }
+//            }
+//        };
+//        mapView.getModel().mapViewPosition.addObserver(observer);
     }
 
+    private Drawable blank_marker;
+    private android.graphics.Paint red_paint = new android.graphics.Paint();
+    private android.graphics.Paint grey_paint = new android.graphics.Paint();
+
+    private void initialize_bitmap() {
+        blank_marker = activity.getResources().getDrawable(R.drawable.marker_white, null);
+        red_paint = new android.graphics.Paint();
+        red_paint.setAntiAlias(true);
+        red_paint.setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY));
+        grey_paint = new android.graphics.Paint();
+        grey_paint.setAntiAlias(true);
+        grey_paint.setColorFilter(new PorterDuffColorFilter(android.graphics.Color.argb(255, 103, 122, 94), PorterDuff.Mode.MULTIPLY));
+    }
 
     public TappableMarker getLast_tapped(){return last_tapped;}
 
@@ -246,19 +276,10 @@ public class Map {
                 if (mapView.getLayerManager().getLayers().contains(this)) {
                     {
                         Toast.makeText(activity, this.getName(), Toast.LENGTH_LONG).show();
-                        Bitmap bitmapRed;
-                        Bitmap bitmapGrey;
-                        Drawable marker = activity.getResources().getDrawable(R.drawable.marker_white, null);
-                        android.graphics.Paint paint = new android.graphics.Paint();
-                        paint.setAntiAlias(true);
-                        paint.setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY));
-                        bitmapRed = AndroidGraphicFactory.convertToBitmap(marker, paint);
-                        paint.setColorFilter(new PorterDuffColorFilter(android.graphics.Color.argb(255, 103, 122, 94), PorterDuff.Mode.MULTIPLY));
-                        bitmapGrey = AndroidGraphicFactory.convertToBitmap(marker, paint);
                         if (getLast_tapped() != null){
-                            getLast_tapped().setBitmap(bitmapGrey);
+                            getLast_tapped().setBitmap(AndroidGraphicFactory.convertToBitmap(blank_marker, grey_paint));
                         }
-                        this.setBitmap(bitmapRed);
+                        this.setBitmap(AndroidGraphicFactory.convertToBitmap(blank_marker, red_paint));
                         setLast_tapped(this);
                         mapView.getModel().mapViewPosition.animateTo(getPosition());
                     }
