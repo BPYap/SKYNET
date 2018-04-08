@@ -1,6 +1,5 @@
 package com.skynet.utility;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;

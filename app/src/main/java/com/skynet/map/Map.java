@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.skynet.hotspotdatabase.DatabaseManager;
 import com.skynet.hotspotdatabase.Hotspot;
 import com.skynet.main.R;
-import org.mapsforge.core.graphics.Bitmap;
 import org.mapsforge.core.graphics.Style;
 import org.mapsforge.core.model.BoundingBox;
 import org.mapsforge.core.model.LatLong;
@@ -23,7 +22,6 @@ import org.mapsforge.map.android.layers.MyLocationOverlay;
 import org.mapsforge.map.android.util.AndroidPreferences;
 import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
-import org.mapsforge.map.layer.Layer;
 import org.mapsforge.map.layer.cache.TileCache;
 import org.mapsforge.map.layer.overlay.Circle;
 import org.mapsforge.map.layer.overlay.Marker;
@@ -32,11 +30,9 @@ import org.mapsforge.map.model.IMapViewPosition;
 import org.mapsforge.map.model.common.PreferencesFacade;
 import org.mapsforge.map.reader.MapFile;
 import org.mapsforge.map.rendertheme.InternalRenderTheme;
-import org.mapsforge.map.model.common.Observer;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;

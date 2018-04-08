@@ -1,6 +1,5 @@
 package com.skynet.main;
 
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.StrictMode;

@@ -9,7 +9,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.skynet.hotspotdatabase.Hotspot;
 import com.skynet.hotspotdatabase.ProcessHotspotJson;
 import com.skynet.hotspotdatabase.RequestQueueSingleton;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
