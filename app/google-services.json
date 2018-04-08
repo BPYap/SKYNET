@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:632874683957:android:96a95c0ac7c80bd8",
         "android_client_info": {
-          "package_name": "com.SKYNET"
+          "package_name": "com.skynet.main"
         }
       },
       "oauth_client": [
