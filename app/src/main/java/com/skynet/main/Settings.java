@@ -46,7 +46,7 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                int increment = Integer.parseInt(getString(R.string.radius_incr));
+                int increment = getApplicationContext().getResources().getInteger(R.integer.radius_incr);
                 Log.i("Progress", Integer.toString(progress*increment));
             }
 

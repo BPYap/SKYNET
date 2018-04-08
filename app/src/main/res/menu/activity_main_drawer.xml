@@ -11,11 +11,7 @@
                 <item
                     android:id="@+id/nav_settings"
                     android:icon="@drawable/ic_menu_manage"
-                    android:title="Settings" />
-                <item
-                    android:id="@+id/nav_refresh"
-                    android:icon="@android:drawable/ic_menu_rotate"
-                    android:title="Refresh hotspots" />
+                    android:title="Show/Hide Seekbar" />
                 <item
                     android:id="@+id/nav_about"
                     android:icon="@android:drawable/ic_menu_info_details"

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    constant values for use in java code
+    !-->
+    <integer name="radius_incr">100</integer>
+    <integer name="radius_init">200</integer>
+</resources>
