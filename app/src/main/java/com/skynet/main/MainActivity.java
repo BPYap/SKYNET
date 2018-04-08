@@ -69,8 +69,8 @@ public class MainActivity extends AppCompatActivity
             }
         };
         mLocationFetcher = LocationFetcher.getInstance(this, locationCallback);
-        setupUI();
 
+        setupUI();
     }
 
     private void setupUI() {
@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int increment = Integer.parseInt(getString(R.string.radius_incr));
                 radius = seekBar.getProgress()*increment;
+                map.markme(mLocation.getLatitude(), mLocation.getLongitude(),radius);
                 Log.i("MainActivity", "seekbar set radius to "+Integer.toString(radius));
             }
         });
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        mLocationFetcher.get_location_update(this); // call to get location update, can put anywhere
+        mLocationFetcher.get_location_update(this);
     }
 
     @Override
