@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "632874683957",
+    "firebase_url": "https://skynet-1520061707074.firebaseio.com",
+    "project_id": "skynet-1520061707074",
+    "storage_bucket": "skynet-1520061707074.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632874683957:android:96a95c0ac7c80bd8",
+        "android_client_info": {
+          "package_name": "com.SKYNET"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632874683957-d0nu2sbqvc1c8k0ahn8jua77ksfft569.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJPYXNu2azqtAehL4V1JEMJbDiWTxw9TA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
