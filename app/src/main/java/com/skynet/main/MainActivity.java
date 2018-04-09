@@ -18,8 +18,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationResult;
 import com.skynet.hotspotdatabase.DatabaseManager;
 import com.skynet.location.LocationFetcher;
 import com.skynet.map.Map;
@@ -31,8 +29,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     private LocationFetcher mLocationFetcher;
-    private Location mLocation;
     private Map map;
+    private int marker_radius = 200;
     private int radius;
 
     // Activity Lifecycle
@@ -57,6 +55,7 @@ public class MainActivity extends AppCompatActivity
         StrictMode.setThreadPolicy(policy);
         DatabaseManager.getDatabaseControl().refreshDatabase(getApplicationContext());
 
+        mLocationFetcher = LocationFetcher.getInstance(this);
         // Location service setup
         LocationCallback locationCallback = new LocationCallback(){
             @Override
@@ -81,6 +80,17 @@ public class MainActivity extends AppCompatActivity
         // UI toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // UI FAB (Floating Action Button!)
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLocationFetcher.get_location_update(MainActivity.this);
+                map.setPosition(mLocationFetcher.getLatitude(), mLocationFetcher.getLongitude());
+                map.markme(mLocationFetcher.getLatitude(),
+                            mLocationFetcher.getLongitude(), marker_radius);
+            }
+        });
         // UI drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -95,8 +105,10 @@ public class MainActivity extends AppCompatActivity
         dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Double dis_lat = Double.parseDouble(getResources().getStringArray(R.array.districts_lat)[dropDown.getSelectedItemPosition()]);
-                Double dis_long = Double.parseDouble(getResources().getStringArray(R.array.districts_long)[dropDown.getSelectedItemPosition()]);
+                Double dis_lat = Double.parseDouble(getResources().getStringArray(R.array.districts_lat)
+                                    [dropDown.getSelectedItemPosition()]);
+                Double dis_long = Double.parseDouble(getResources().getStringArray(R.array.districts_long)
+                                    [dropDown.getSelectedItemPosition()]);
                 map.setPosition(dis_lat, dis_long);
             }
 
@@ -104,6 +116,17 @@ public class MainActivity extends AppCompatActivity
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+        // UI drawer
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        // UI seekbar (for marker_radius)
+        SeekBar radiusSeekbar = (SeekBar)findViewById(R.id.radiusSeekbar);
         // UI seekbar (for radius)
         final SeekBar radiusSeekbar = (SeekBar)findViewById(R.id.radiusSeekbar);
         radiusSeekbar.setVisibility(View.INVISIBLE);
@@ -120,6 +143,11 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                int increment = Integer.parseInt(getString(R.string.radius_incr));
+                marker_radius = seekBar.getProgress()*increment;
+                map.markme(mLocationFetcher.getLatitude(),
+                            mLocationFetcher.getLongitude(), marker_radius);
+                Log.i("MainActivity", "seekbar set marker_radius to "+Integer.toString(marker_radius));
                 int increment = getApplicationContext().getResources().getInteger(R.integer.radius_incr);
                 radius = seekBar.getProgress()*increment;
                 map.markme(mLocation.getLatitude(), mLocation.getLongitude(),radius);
@@ -175,6 +203,12 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        if (id == R.id.nav_refresh) {
+            // re-fetch the json file
+        } else if (id == R.id.nav_about) {
+            // static page separate activity
+        } else if (id == R.id.nav_settings) {
+            // show seekbar marker_radius
         if (id == R.id.nav_about)
         {
             // pop an alert dialog

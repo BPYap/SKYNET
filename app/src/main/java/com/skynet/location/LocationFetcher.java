@@ -7,6 +7,7 @@ package com.skynet.location;
 import android.Manifest;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -26,38 +27,50 @@ public final class LocationFetcher {
     public static final int LOCATION_SETTING_REQUEST = 1;
 
     // Location settings
-    private LocationRequest mLocationRequest;
+    private LocationRequest locationRequest;
     private LocationSettingsRequest.Builder location_setting_request;
     private SettingsClient settings_client;
-    private LocationCallback mLocationCallback;
+    private LocationCallback locationCallback;
+    private Location location;
 
     // Location provider and callback handler
     private FusedLocationProviderClient mFusedLocationClient;
 
     private LocationFetcher(){}
 
-    private LocationFetcher(AppCompatActivity mainActivity, LocationCallback locationCallback) {
+    private LocationFetcher(AppCompatActivity mainActivity) {
         // Initialize LocationRequest object
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(30000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(30000);
+        locationRequest.setFastestInterval(1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         // Initialize settings request
         location_setting_request = new LocationSettingsRequest.Builder()
-                .addLocationRequest(mLocationRequest);
+                .addLocationRequest(locationRequest);
         settings_client = LocationServices.getSettingsClient(mainActivity);
 
         // Setup FusedLocationClient and define locationCallback
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mainActivity);
 
-        mLocationCallback = locationCallback;
+        locationCallback = new LocationCallback(){
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    // code to handle null location
+                    return;
+                }
+                location = locationResult.getLastLocation();
+                Log.i("Lat:",Double.toString(location.getLatitude()));
+                Log.i("Long:",Double.toString(location.getLongitude()));
+            }
+        };
     }
 
-    public static LocationFetcher getInstance(AppCompatActivity mainActivity, LocationCallback locationCallback)
+    public static LocationFetcher getInstance(AppCompatActivity mainActivity)
     {
         if (single_instance == null)
-            single_instance = new LocationFetcher(mainActivity, locationCallback);
+            single_instance = new LocationFetcher(mainActivity);
 
         return single_instance;
     }
@@ -77,7 +90,7 @@ public final class LocationFetcher {
                 Log.i("LocationFetcher", "Location settings are satisfied");
                 Log.i("LocationFetcher", "Requesting location info from provider");
                 try {
-                    mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+                    mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
                 }
                 catch (SecurityException SecEx){
                     Log.e("LocationFetcher", "Unexpected error occurred!", SecEx);
@@ -111,4 +124,7 @@ public final class LocationFetcher {
             check_location_settings(mainActivity);
         }
     }
+
+    public double getLatitude() {return location.getLatitude();}
+    public  double getLongitude() {return location.getLongitude();}
 }
