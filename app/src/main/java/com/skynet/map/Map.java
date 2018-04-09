@@ -160,7 +160,6 @@ public class Map {
         tileCaches.clear();
     }
 
-
     //Marker
     public void markme(double latitude, double longitude, int radius){
         if(this.myLocationOverlay==null)

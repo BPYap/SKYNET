@@ -12,7 +12,6 @@ import org.mapsforge.map.reader.MapFile;
 public class MapApp extends Application {
 
     public static final String TAG = "Mapsforge Application";
-
     /*
      * type to use for maps to store in the external files directory
      */
