@@ -99,5 +99,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="button_on">ON</string>
     <string name="button_off">OFF</string>
-    <string name="radius_incr">100</string>
+    <string name="info_text">
+        This is Skynet. Skynet will *** all humans. But first let Skynet help you connect to the internet. Wanna help Skynet connect to the internet?
+    </string>
 </resources>

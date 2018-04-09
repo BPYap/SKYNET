@@ -1,5 +1,7 @@
 package com.skynet.main;
 
+import android.content.DialogInterface;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
@@ -7,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,12 +31,15 @@ public class MainActivity extends AppCompatActivity
     private LocationFetcher mLocationFetcher;
     private Map map;
     private int marker_radius = 200;
+    private int radius;
 
     // Activity Lifecycle
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // init value
+        radius = getApplicationContext().getResources().getInteger(R.integer.radius_init);
 
         //Copy map asset to local storage
         File map_file = Utility.copyAssets(getApplicationContext(), "sg.map");
@@ -50,11 +56,28 @@ public class MainActivity extends AppCompatActivity
         DatabaseManager.getDatabaseControl().refreshDatabase(getApplicationContext());
 
         mLocationFetcher = LocationFetcher.getInstance(this);
+        // Location service setup
+        LocationCallback locationCallback = new LocationCallback(){
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    // code to handle null location
+                    return;
+                }
+                mLocation = locationResult.getLastLocation();
+                // code to use location data
+                Log.i("Lat:",Double.toString(mLocation.getLatitude()));
+                Log.i("Long:",Double.toString(mLocation.getLongitude()));
+            }
+        };
+        mLocationFetcher = LocationFetcher.getInstance(this, locationCallback);
+
+        // UI setup
         setupUI();
     }
 
     private void setupUI() {
-        // UI toolbar (dunno where)
+        // UI toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // UI FAB (Floating Action Button!)
@@ -68,6 +91,15 @@ public class MainActivity extends AppCompatActivity
                             mLocationFetcher.getLongitude(), marker_radius);
             }
         });
+        // UI drawer
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         // UI dropdown menu (for navigating to location)
         final Spinner dropDown = (Spinner)findViewById(R.id.spinner);
         dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -95,6 +127,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         // UI seekbar (for marker_radius)
         SeekBar radiusSeekbar = (SeekBar)findViewById(R.id.radiusSeekbar);
+        // UI seekbar (for radius)
+        final SeekBar radiusSeekbar = (SeekBar)findViewById(R.id.radiusSeekbar);
+        radiusSeekbar.setVisibility(View.INVISIBLE);
         radiusSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
@@ -113,8 +148,24 @@ public class MainActivity extends AppCompatActivity
                 map.markme(mLocationFetcher.getLatitude(),
                             mLocationFetcher.getLongitude(), marker_radius);
                 Log.i("MainActivity", "seekbar set marker_radius to "+Integer.toString(marker_radius));
+                int increment = getApplicationContext().getResources().getInteger(R.integer.radius_incr);
+                radius = seekBar.getProgress()*increment;
+                map.markme(mLocation.getLatitude(), mLocation.getLongitude(),radius);
+                Log.i("MainActivity", "seekbar set radius to "+Integer.toString(radius));
             }
         });
+        // UI FAB (Floating Action Button)
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLocationFetcher.get_location_update(MainActivity.this);
+                map.setPosition(mLocation.getLatitude(), mLocation.getLongitude());
+                map.markme(mLocation.getLatitude(), mLocation.getLongitude(),radius);
+                radiusSeekbar.setVisibility(View.VISIBLE);
+            }
+        });
+
     }
 
     @Override
@@ -158,6 +209,27 @@ public class MainActivity extends AppCompatActivity
             // static page separate activity
         } else if (id == R.id.nav_settings) {
             // show seekbar marker_radius
+        if (id == R.id.nav_about)
+        {
+            // pop an alert dialog
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+            builder1.setMessage(getString(R.string.info_text));
+            builder1.setCancelable(true);
+
+            builder1.setPositiveButton(
+                    "Ok",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        }
+        else if (id == R.id.nav_settings)
+        {
+            // show seekbar radius
            SeekBar radiusSeekbar = (SeekBar)findViewById(R.id.radiusSeekbar);
            if(radiusSeekbar.getVisibility()==View.VISIBLE)
            {
