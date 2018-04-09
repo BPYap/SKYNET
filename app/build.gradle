@@ -29,8 +29,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
-    androidTestCompile 'com.android.support.test:runner:1.0.1'
     implementation 'com.android.volley:volley:1.0.0'
     implementation "android.arch.persistence.room:runtime:1.0.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
@@ -42,4 +40,3 @@ dependencies {
     implementation 'net.sf.kxml:kxml2:2.3.0'
     implementation 'org.mapsforge:mapsforge-map-android:master-SNAPSHOT'
     implementation 'com.caverock:androidsvg:1.2.2-beta-1'
-}
