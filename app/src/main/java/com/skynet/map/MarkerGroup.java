@@ -89,9 +89,9 @@ public class MarkerGroup {
         }
     }
 
-    public TappableMarker getLast_tapped(){return last_tapped;}
+    private TappableMarker getLast_tapped(){return last_tapped;}
 
-    public void setLast_tapped(TappableMarker marker){this.last_tapped = marker;}
+    private void setLast_tapped(TappableMarker marker){this.last_tapped = marker;}
 
     public class TappableMarker extends Marker {
 
@@ -100,7 +100,7 @@ public class MarkerGroup {
             return this.text;
         }
 
-        public TappableMarker(int icon, LatLong localLatLong, String name) {
+        protected TappableMarker(int icon, LatLong localLatLong, String name) {
             super(localLatLong, AndroidGraphicFactory.convertToBitmap(activity.getResources().getDrawable(icon, null)),
                     (AndroidGraphicFactory.convertToBitmap(activity.getResources().getDrawable(icon, null)).getWidth()) / 2,
                     -1 * (AndroidGraphicFactory.convertToBitmap(activity.getApplicationContext().getResources().
