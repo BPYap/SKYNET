@@ -32,9 +32,7 @@ public final class LocationFetcher {
     private SettingsClient settings_client;
     private LocationCallback locationCallback;
     private Location location;
-
-    // Location provider and callback handler
-    private FusedLocationProviderClient mFusedLocationClient;
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
     private LocationFetcher(){}
 
@@ -51,7 +49,7 @@ public final class LocationFetcher {
         settings_client = LocationServices.getSettingsClient(mainActivity);
 
         // Setup FusedLocationClient and define locationCallback
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mainActivity);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mainActivity);
 
         locationCallback = new LocationCallback(){
             @Override
@@ -90,7 +88,7 @@ public final class LocationFetcher {
                 Log.i("LocationFetcher", "Location settings are satisfied");
                 Log.i("LocationFetcher", "Requesting location info from provider");
                 try {
-                    mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+                    fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
                 }
                 catch (SecurityException SecEx){
                     Log.e("LocationFetcher", "Unexpected error occurred!", SecEx);
