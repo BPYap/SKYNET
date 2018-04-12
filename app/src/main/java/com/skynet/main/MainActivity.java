@@ -27,7 +27,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private LocationFetcher mLocationFetcher;
+    private LocationFetcher locationFetcher;
     private Map map;
     private int marker_radius = 200;
 
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         StrictMode.setThreadPolicy(policy);
         DatabaseManager.getDatabaseControl().refreshDatabase(getApplicationContext());
 
-        mLocationFetcher = LocationFetcher.getInstance(this);
+        locationFetcher = LocationFetcher.getInstance(this);
 
         // UI setup
         setupUI();
@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mLocationFetcher.get_location_update(MainActivity.this);
-                map.setPosition(mLocationFetcher.getLatitude(), mLocationFetcher.getLongitude());
-                map.markme(mLocationFetcher.getLatitude(),
-                        mLocationFetcher.getLongitude(), marker_radius);
+                locationFetcher.get_location_update(MainActivity.this);
+                map.setPosition(locationFetcher.getLatitude(), locationFetcher.getLongitude());
+                map.markme(locationFetcher.getLatitude(),
+                        locationFetcher.getLongitude(), marker_radius);
             }
         });
         // UI drawer
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int increment = getApplicationContext().getResources().getInteger(R.integer.radius_incr);
                 marker_radius = seekBar.getProgress() * increment;
-                map.markme(mLocationFetcher.getLatitude(), mLocationFetcher.getLongitude(), marker_radius);
+                map.markme(locationFetcher.getLatitude(), locationFetcher.getLongitude(), marker_radius);
                 Log.i("MainActivity", "seekbar set radius to " + Integer.toString(marker_radius));
             }
         });
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        mLocationFetcher.get_location_update(this);
+        locationFetcher.get_location_update(this);
     }
 
     @Override
