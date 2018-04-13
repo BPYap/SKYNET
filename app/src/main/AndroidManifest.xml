@@ -26,7 +26,13 @@
         </activity>
         <activity
             android:name="com.skynet.main.Settings"
-            android:parentActivityName="com.skynet.main.MainActivity"></activity>
+            android:parentActivityName="com.skynet.main.MainActivity">
+        </activity>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.skynet.location.LocationFetcher"
+            android:parentActivityName="com.skynet.main.MainActivity">
+        </activity>
     </application>
 
 </manifest>
