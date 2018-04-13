@@ -1,3 +1,4 @@
+// Currently not in used
 package com.skynet.main;
 
 import android.os.Bundle;
