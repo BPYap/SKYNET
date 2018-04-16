@@ -6,6 +6,18 @@ import android.util.Log;
 
 import java.io.*;
 
+/**
+ * <pre>
+ *  Utility to copy files from asset folder to local storage
+ *  Usage:
+ *      Call copyAssets(context, filename) in app initialization.
+ *      Will not copy file again if the file already exists.
+ *      To replace old file of same file name with new file, re-installation of app is required.
+ * </pre>
+ *
+ *  @author  Yap Boon Peng
+ */
+
 public class Utility {
     public static File copyAssets(Context context, String filename) {
         AssetManager assetManager = context.getAssets();

@@ -1,16 +1,3 @@
-/* How to use this package:
-1. Add the following permission under AndroidManifest.xml <manifest>:
-        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-2. Copy the following code below under AndroidManifest.xml <application>:
-        <activity
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:name="com.skynet.location.LocationHelper"
-            android:parentActivityName="insert your MainActivity class">
-        </activity>
-3. Invoke startActivity(new Intent(MainActivity.this, LocationFetcher.class)); to request location
-4. Invoke LocationHelper.hasData() to check location data availability
-5. Invoke LocationHelper.getLatitude() or LocationHelper.getLongitude() for coordinates
-*/
 package com.skynet.location;
 
 import android.Manifest;
@@ -30,6 +17,25 @@ import com.google.android.gms.location.*;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
+/**
+ * <pre>
+ *  How to use this package:
+ *  1. Add the following permission under AndroidManifest.xml <manifest>:
+ *      &lt;uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/&gt;
+ *  2. Copy the following code below under AndroidManifest.xml &lt;application/&gt;:
+ *      &lt;activity
+ *      android:theme="@android:style/Theme.Translucent.NoTitleBar"
+ *      android:name="com.skynet.location.LocationHelper"
+ *      android:parentActivityName="insert your MainActivity class"&gt;
+ *      &lt;/activity&gt;
+ *  3. Invoke startActivity(new Intent(MainActivity.this, LocationFetcher.class)); to request location
+ *  4. Invoke LocationHelper.hasData() to check location data availability
+ *  5. Invoke LocationHelper.getLatitude() or LocationHelper.getLongitude() for coordinates
+ *  </pre>
+ *
+ *  @author  Yap Boon Peng
+ */
 
 public final class LocationFetcher extends Activity{
     // request code
