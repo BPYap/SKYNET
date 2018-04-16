@@ -66,10 +66,12 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, LocationFetcher.class));
                 if (LocationFetcher.hasData()){
                     map.setPosition(LocationFetcher.getLatitude(), LocationFetcher.getLongitude());
                     map.markme(LocationFetcher.getLatitude(), LocationFetcher.getLongitude(), marker_radius);
+                }
+                else{
+                    startActivity(new Intent(MainActivity.this, LocationFetcher.class));
                 }
             }
         });
