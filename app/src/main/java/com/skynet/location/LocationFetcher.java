@@ -107,6 +107,7 @@ public final class LocationFetcher extends Activity{
                     Log.i("LocationFetcher", "Requesting location info from provider");
                     fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
                     LocationFetcher.setupFinished = true;
+                    finish();
                 }
                 catch (SecurityException SecEx){
                     Log.e("LocationFetcher", "Unexpected error occurred", SecEx);
@@ -126,8 +127,6 @@ public final class LocationFetcher extends Activity{
                 }
             }
         });
-
-        finish();
     }
 
     private void request_update() {
